@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7866436805759739066}
   - component: {fileID: 96473154118474080}
   - component: {fileID: 5475035043623965204}
+  - component: {fileID: 3674548215164477415}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -50,7 +51,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!33 &375874903963356477
 MeshFilter:
@@ -109,7 +110,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4350202146339343685}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1575e6c8203edc6bb9da6592376942bf, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -128,4 +129,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c55296c67111c334b9db8b905505b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialVelocity: {x: 5, y: 0}
+  initialVelocity: {x: 5, y: 0, z: 0}
+  walkSpeed: 5
+  sprintSpeed: 10
+  crouchSpeed: 2
+  accelerationSpeed: 500
+--- !u!114 &3674548215164477415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4350202146339343685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402b7571f11bbfca6b85772b77989db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
