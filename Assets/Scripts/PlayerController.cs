@@ -4,17 +4,45 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private MovementScript movementScript;
+    public float cameraSensitivityX = 2000;
+    public float cameraSensitivityY = 2000;
+
+    float xRotation;
+    float yRotation;
     
+    public Camera camera;
+    private MovementScript movementScript;
 
     void Start()
     {
         movementScript = GetComponent<MovementScript>();
+
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     
     void Update()
     {
+        // ===================================
+        //           Camera Control
+        // ===================================
+
+        // Get mouse input
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * cameraSensitivityX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * cameraSensitivityY;
+
+        yRotation += mouseX;
+        xRotation -= mouseY;
+        // Prevent the player from looking too far up or down
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        // Apply rotations to player and camera
+        transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        camera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+
+
         // ===================================
         //           Movement states
         // ===================================
@@ -25,7 +53,8 @@ public class PlayerController : MonoBehaviour
             movementScript.movementState = MovementScript.MovementStates.sprinting;
         }
         // If the sprint button was just released
-        // SPRINTING WITH SHIFT DOESN'T ALWAYS WORK PROPERLY IN THE EDITOR, SO YOU CAN ALSO USE "F" TO SPRINT
+        // SPRINTING WITH SHIFT DOESN'T ALWAYS WORK PROPERLY IN THE EDITOR,
+        // SO YOU CAN ALSO USE "F" TO SPRINT
         else if (Input.GetButtonUp("Sprint"))
         {
             // And if we were sprinting before letting go of the button
@@ -63,8 +92,13 @@ public class PlayerController : MonoBehaviour
             // Check if the moving script component is applied
             if (movementScript != null)
             {
+                
                 // Turn the player input (-1.0 to 1.0) into a normalized direction
                 var direction = new Vector2(HorizontalInput, VerticalInput).normalized;
+
+                // Rotate the input direction by the camera direction
+                direction = RotateVector(direction, -yRotation);
+
                 // Then move in that direction
                 movementScript.Move(direction);
             }
@@ -74,4 +108,19 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+
+    // Rotate a Vector2 by an angle (used just for movement calculation, can move elsewhere later)
+    Vector2 RotateVector(Vector2 vector, float angleDegrees)
+    {
+        float radians = angleDegrees * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(radians);
+        float sin = Mathf.Sin(radians);
+        
+        return new Vector2(
+            vector.x * cos - vector.y * sin,
+            vector.x * sin + vector.y * cos
+        );
+    }
+        
 }
