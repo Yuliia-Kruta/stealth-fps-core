@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3700fcc96ae303d3ca0051be0bf24d61
+guid: 45ea5f6694ca4f1468c37f57dd06adc5
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Stick
-    second: {fileID: 2100000, guid: 1cf4296f9f2c21e4fb789d624c18d997, type: 2}
+      name: Material
+    second: {fileID: 2100000, guid: bf4805ffea1445b48a79ef96048caefb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
