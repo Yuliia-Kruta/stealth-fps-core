@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4634636393409629730}
   m_Layer: 0
   m_Name: PatrolNode
-  m_TagString: Untagged
+  m_TagString: PatrolNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -93,7 +93,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3834284035547791485}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -110,3 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5bd574ca14d5a49ae1849793088078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  routeID: 0
+  nodeID: 0

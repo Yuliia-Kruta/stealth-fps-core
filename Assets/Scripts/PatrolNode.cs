@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class PatrolNode : MonoBehaviour
 {
+    // Which route this node is a part of
     public int routeID;
+    // Which node this is, sequentially
     public int nodeID;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    /*
+    A patrol "route" is made up of these patrol nodes.
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    All routes must:
+    - Have at least two nodes
+    - Have a node with a nodeID of 0
+    - Not have any gaps in their nodeIDs (e.g. 0, 1, 2, 4)
+    
+    All nodes in a route must:
+    - Have unique nodeIDs
+    */
 }
