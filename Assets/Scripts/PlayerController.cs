@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     float xRotation;
     float yRotation;
     
-    public Camera camera;
+    public new Camera camera;
     private MovementScript movementScript;
 
     void Start()
