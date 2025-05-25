@@ -63,9 +63,11 @@ public class EnemyAI : MonoBehaviour
         }
         
     }
-    // onCollisionEnter()
-        // if collision is with patrol node:
-            // if that patrol node is the same as followPatrolRoute.destinationNode
-                // Set the destination to the position of the next node in the current route
-                // pathfinding.updateDestination(followPatrolRoute.findNextNode().transform.position)
+
+    // Behaviour that runs when noise is received
+    public void OnNoiseReceived(Vector3 noisePosition)
+    {
+        Debug.Log("I hear noise!!!");
+        Debug.Log(noisePosition);
+    }
 }

@@ -667,6 +667,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PatrolNode (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3834284035547791485, guid: 59f37948d6055464080666ea138192d8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4634636393409629730, guid: 59f37948d6055464080666ea138192d8,
         type: 3}
       propertyPath: nodeID
