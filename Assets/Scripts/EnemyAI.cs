@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class EnemyAI : MonoBehaviour
     // Components
     private Pathfinding pathfinding;
     private FollowPatrolRoute followPatrolRoute;
+    private NavMeshAgent navMeshAgent;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +19,7 @@ public class EnemyAI : MonoBehaviour
         // Components
         pathfinding = GetComponent<Pathfinding>();
         followPatrolRoute = GetComponent<FollowPatrolRoute>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
 
         // Set the destination to the patrol route
         pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
@@ -25,8 +28,20 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (stunTimer > 0f)
+        {
+            
+            stunTimer -= Time.deltaTime;
+            if (!navMeshAgent.isStopped)
+                navMeshAgent.isStopped = true;
+        }
+        else
+        {
+            if (navMeshAgent.isStopped)
+                navMeshAgent.isStopped = false;
+        }
     }
+
 
 
     void OnCollisionEnter(Collision collision)
@@ -43,8 +58,10 @@ public class EnemyAI : MonoBehaviour
         // Get the object that we collided with
         GameObject collidedObject = collision.gameObject;
 
+        // We check if the collision object has a PatrolNode before comparing it 
+        PatrolNode node = collidedObject.GetComponent<PatrolNode>();
         // If we collided with our destination patrol node
-        if (collidedObject.GetComponent<PatrolNode>() == followPatrolRoute.destinationNode)
+        if (node != null && node == followPatrolRoute.destinationNode)
         {
             // Find the next patrol node
             PatrolNode newDestinationNode = followPatrolRoute.findNodeByID(followPatrolRoute.destinationNode.nodeID + 1);
@@ -62,6 +79,17 @@ public class EnemyAI : MonoBehaviour
             }
         }
         
+    }
+    
+    // Method to stun the enemy
+    public void Stun(float duration)
+    {
+        // Apply stun if not already stunned
+        if (stunTimer <= 0f) 
+        {
+            stunTimer = duration;
+            Debug.Log($"Enemy stunned for {duration} seconds.");
+        }
     }
 
     // Behaviour that runs when noise is received

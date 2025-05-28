@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-
     // Default weapon properties
     private float damage = 0;
     private float stunDuration = 0;
@@ -20,38 +19,43 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         // Change the weapon to the right type 
-        WeaponSetup(damage, stunDuration, explosionSize);
-
+        WeaponSetup();
     }
 
-    void WeaponSetup(float damage, float stunDuration, float explosionSizefloat)
+    void WeaponSetup()
     {
         // Should WeaponSetup be public so the NoiseScript can read it?
         switch (weaponType)
         {
             // Set properties for the stone weapon
             case WeaponType.stone:
-              
+                stunDuration = 5f;
                 break;
-
             // Set properties for the stick weapon
             case WeaponType.stick:
-             
+                stunDuration = 2f;
                 break;
-
             // Set properties for the grenade weapon
             case WeaponType.grenade:
-          
+                stunDuration = 10f;
                 break;
         }
-        
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Blank for now
+        // Check if we hit an enemy
+        EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+        if (enemy != null)
+        {
+            // Apply stun based on weapon's stun duration
+            enemy.Stun(stunDuration); 
+        }
+
+        // Mark weapom as grounded
+        isGrounded = true;
+        // Destroy(gameObject); // e.g. for grenade
     }
 
     void HitEnemy()
@@ -59,6 +63,7 @@ public class Weapon : MonoBehaviour
         // Blank for now
     }
 }
+
 public enum WeaponType
 {
     stone = 0,
