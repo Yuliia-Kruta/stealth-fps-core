@@ -54,7 +54,7 @@ public class Weapon : MonoBehaviour
     {
         // Check if we hit an enemy
         EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
-        if (enemy != null)
+        if (enemy != null && !isGrounded)
         {
             // Apply stun based on weapon's stun duration
             enemy.Stun(stunDuration);
