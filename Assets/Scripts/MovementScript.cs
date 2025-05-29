@@ -10,6 +10,10 @@ public class MovementScript : MonoBehaviour
     public float walkSpeed = 5.0f;
     public float sprintSpeed = 8.5f;
     public float crouchSpeed = 2.5f;
+    // Noise levels for the different states of movement
+    public float walkNoise = 3.0f;
+    public float sprintNoise = 8.0f;
+    public float crouchNoise = 1.0f;
     // How quickly the rigidbody accelerates
     public float accelerationSpeed = 500.0f;
 
@@ -24,6 +28,8 @@ public class MovementScript : MonoBehaviour
 
 
     private Rigidbody rb;
+    private NoiseSpawner noiseSpawner;
+
 
 
     void Start()
@@ -33,6 +39,12 @@ public class MovementScript : MonoBehaviour
 
         // Set the initial velocity
         UpdateVelocity(initialVelocity);
+        
+        noiseSpawner = GetComponent<NoiseSpawner>();
+        if (noiseSpawner == null)
+        {
+            noiseSpawner = gameObject.AddComponent<NoiseSpawner>();
+        }
     }
 
 
@@ -48,18 +60,22 @@ public class MovementScript : MonoBehaviour
     public void Move(Vector2 direction)
     {
         float maxSpeed = walkSpeed;
+        float noiseRadius = walkNoise;
 
         // Decide the maxSpeed
         switch (movementState)
         {
             case MovementStates.walking:
                 maxSpeed = walkSpeed;
+                noiseRadius = walkNoise;
                 break;
             case MovementStates.sprinting:
                 maxSpeed = sprintSpeed;
+                noiseRadius = sprintNoise;
                 break;
             case MovementStates.crouching:
                 maxSpeed = crouchSpeed;
+                noiseRadius = crouchNoise;
                 break;
         }
 
@@ -80,6 +96,12 @@ public class MovementScript : MonoBehaviour
         rb.AddForce(forceToAdd.x, 0f, forceToAdd.y);
         
         //Debug.Log($"Current Speed: {currentVelocity.magnitude}, Target Speed: {targetVelocity.magnitude}, Movement State: {movementState}");
+        
+        if (direction.sqrMagnitude > 0.01f)
+        {
+            noiseSpawner.SpawnNoise(noiseRadius, 0.5f);
+        }
+        
     }
 
 
