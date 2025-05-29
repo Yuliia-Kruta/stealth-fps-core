@@ -45,6 +45,9 @@ public class EnemyAI : MonoBehaviour
         followPatrolRoute = GetComponent<FollowPatrolRoute>();
         navMeshAgent = GetComponent<NavMeshAgent>();
 
+        // Get a reference to the player
+        playerObject = GameObject.FindObjectsOfType<PlayerController>()[0].gameObject;
+
 
         // Set the destination to the patrol route
         pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
@@ -54,9 +57,10 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Decreasing the stun timer
+        // If this enemy is stunned
         if (stunTimer > 0f)
         {
+            // Decrease the stun timer
             stunTimer -= Time.deltaTime;
             if (!navMeshAgent.isStopped)
                 navMeshAgent.isStopped = true;
@@ -66,10 +70,16 @@ public class EnemyAI : MonoBehaviour
             if (navMeshAgent.isStopped)
                 navMeshAgent.isStopped = false;
             
-            // Check line of sight
-            if (playerObject != null)
+
+            // Check line of sight between this enemy and the player
+            string[] includedLayers = {"Obstacle"};
+            if (CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange))
             {
-                CheckLineOfSight();
+                canSeePlayer = true;
+            }
+            else
+            {
+                canSeePlayer = false;
             }
             
             // Check if we are investigating and arrived at noise location
@@ -87,7 +97,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         // Path toward the player if they're in the enemy's vision
-        if (canSeePlayer && playerObject != null)
+        if (canSeePlayer)
         {
             pathfinding.updateDestination(playerObject.transform.position);
         }
@@ -205,6 +215,46 @@ public class EnemyAI : MonoBehaviour
                 // Forget the player
                 playerObject = null; 
             }
+        }
+    }
+
+    // Checks if there are any objects from includedLayers between fromPosition and toPosition
+    // Returns true if there are no objects, returns false if there are objects or if the line's length exceeds maxDistance
+    bool CheckLineOfSight2(Vector3 fromPosition, Vector3 toPosition, string[] includedLayers, float maxDistance = 999999f)
+    {
+        Vector3 directionToTarget = (toPosition - fromPosition).normalized;
+        float distanceToTarget = Vector3.Distance(fromPosition, toPosition);
+        
+        // If target is too far
+        if (distanceToTarget > maxDistance)
+        {
+            return false;
+        }
+        
+        
+        // Create a LayerMask to include the specified collision layers
+        LayerMask layerMask = 0;
+        foreach (string layer in includedLayers)
+        {
+            int layerIndex = LayerMask.NameToLayer(layer);
+            
+            if (layerIndex != -1)
+            {
+                layerMask |= (1 << layerIndex);
+            }
+        } 
+
+
+        // Cast a ray toward the target, check if any objects were hit
+        if (Physics.Raycast(fromPosition + Vector3.up, directionToTarget, out RaycastHit hit, distanceToTarget, layerMask))
+        {
+            Debug.DrawRay(fromPosition, (hit.point - fromPosition), Color.red, 0.025f);
+            return false;
+        }
+        else
+        {
+            Debug.DrawRay(fromPosition, (toPosition - fromPosition), Color.green, 0.025f);
+            return true;
         }
     }
 
