@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 96473154118474080}
   - component: {fileID: 5475035043623965204}
   - component: {fileID: 3674548215164477415}
+  - component: {fileID: 1074673523302088922}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -218,6 +219,9 @@ MonoBehaviour:
   walkSpeed: 5
   sprintSpeed: 8.5
   crouchSpeed: 2.5
+  walkNoise: 3
+  sprintNoise: 8
+  crouchNoise: 1
   accelerationSpeed: 500
   movementState: 0
 --- !u!114 &3674548215164477415
@@ -235,3 +239,17 @@ MonoBehaviour:
   cameraSensitivityX: 2000
   cameraSensitivityY: 2000
   camera: {fileID: 4189831295237782382}
+--- !u!114 &1074673523302088922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4350202146339343685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7dadcb1679640398739f4df055d21f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseRadius: 3
+  noiseDuration: 1

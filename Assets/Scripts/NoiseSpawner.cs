@@ -38,7 +38,7 @@ public class NoiseSpawner : MonoBehaviour
         for (float angle = 0; angle < 360; angle += step)
         {
             Vector3 dir = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
-            Debug.DrawRay(center, dir * radius, Color.yellow, duration);
+            Debug.DrawRay(center, dir * radius, Color.yellow, 0.1f);
         }
     }
 }

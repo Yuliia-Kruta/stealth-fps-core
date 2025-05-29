@@ -23,7 +23,8 @@ public class EnemyAI : MonoBehaviour
     {
         Patrolling,
         Investigating,
-        Stunned
+        Stunned,
+        Chasing
     }
 
     private EnemyState currentState = EnemyState.Patrolling;
@@ -71,22 +72,27 @@ public class EnemyAI : MonoBehaviour
                 navMeshAgent.isStopped = false;
             
 
-            // Check line of sight between this enemy and the player
-            string[] includedLayers = {"Obstacle"};
-            if (CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange))
+            // If the enemy is chasing the player, allow them to keep track of the player with line of sight
+            if (currentState == EnemyState.Chasing)
             {
-                canSeePlayer = true;
-            }
-            else
-            {
-                canSeePlayer = false;
+                // Check line of sight between this enemy and the player
+                string[] includedLayers = {"Obstacle"};
+                if (CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange))
+                {
+                    canSeePlayer = true;
+                }
+                else
+                {
+                    canSeePlayer = false;
+                }
             }
             
-            // Check if we are investigating and arrived at noise location
-            if (currentState == EnemyState.Investigating)
+            
+            // If the enemy is investigating and has arrived at its destination
+            if (currentState == EnemyState.Investigating || currentState == EnemyState.Chasing)
             {
-                float distanceToNoise = Vector3.Distance(transform.position, noisePosition);
-                if (distanceToNoise <= arrivedThreshold)
+                float distanceToDestination = Vector3.Distance(transform.position, navMeshAgent.destination);
+                if (distanceToDestination <= arrivedThreshold)
                 {
                     Debug.Log("Enemy investigated noise and found nothing. Returning to patrol.");
                     currentState = EnemyState.Patrolling;
@@ -107,8 +113,9 @@ public class EnemyAI : MonoBehaviour
         {
             pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
         }*/
+        
         // Return to patrol if not doing something else
-        else if (currentState != EnemyState.Investigating && currentState != EnemyState.Stunned)
+        else if (currentState != EnemyState.Investigating && currentState != EnemyState.Stunned && currentState != EnemyState.Chasing)
         {
             currentState = EnemyState.Patrolling;
             pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
@@ -154,14 +161,7 @@ public class EnemyAI : MonoBehaviour
         // If our vision overlapped with a player
         if (player != null)
         {
-            // Save a reference to the player for later
-            if (playerObject == null)
-            {
-                playerObject = collidedObject;
-                Debug.Log("Got player object");
-            }
-
-            //canSeePlayer = true;
+            currentState = EnemyState.Chasing;
         }
     }
 
@@ -264,8 +264,12 @@ public class EnemyAI : MonoBehaviour
         if (stunTimer > 0f) return;
 
         Debug.Log($"Enemy hears noise at {noisePos}");
-        currentState = EnemyState.Investigating;
         noisePosition = noisePos;
         pathfinding.updateDestination(noisePosition);
+
+        if (currentState != EnemyState.Chasing)
+        {
+            currentState = EnemyState.Investigating;
+        }
     }
 }
