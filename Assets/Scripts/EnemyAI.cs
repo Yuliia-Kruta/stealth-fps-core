@@ -93,9 +93,17 @@ public class EnemyAI : MonoBehaviour
     }
 
     // Behaviour that runs when noise is received
-    public void OnNoiseReceived(Vector3 noisePosition)
+    /*public void OnNoiseReceived(Vector3 noisePosition)
     {
         Debug.Log("I hear noise!!!");
         Debug.Log(noisePosition);
+    }*/
+    
+    public void OnNoiseReceived(Vector3 noisePosition)
+    {
+        if (stunTimer > 0f) return;
+
+        Debug.Log($"Enemy hears noise at {noisePosition}");
+        pathfinding.updateDestination(noisePosition);
     }
 }

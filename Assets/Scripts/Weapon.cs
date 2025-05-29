@@ -12,6 +12,8 @@ public class Weapon : MonoBehaviour
 
     // Check whether the object is in flight
     private bool isGrounded = false;
+    
+    private NoiseSpawner noiseSpawner;
 
     // 
     public WeaponType weaponType;
@@ -21,6 +23,11 @@ public class Weapon : MonoBehaviour
     {
         // Change the weapon to the right type 
         WeaponSetup();
+        noiseSpawner = GetComponent<NoiseSpawner>();
+        if (noiseSpawner == null)
+        {
+            noiseSpawner = gameObject.AddComponent<NoiseSpawner>();
+        }
     }
 
     void WeaponSetup()
@@ -50,23 +57,44 @@ public class Weapon : MonoBehaviour
         if (enemy != null)
         {
             // Apply stun based on weapon's stun duration
-            enemy.Stun(stunDuration); 
+            enemy.Stun(stunDuration);
         }
 
-        // Mark weapom as grounded
-        isGrounded = true;
-        // Destroy(gameObject); // e.g. for grenade
+        if (!isGrounded)
+        {
+            // Emit noise based on weapon type
+            float noiseRadius = 0f;
+            float noiseDuration = 1f;
+
+            switch (weaponType)
+            {
+                case WeaponType.stick:
+                    noiseRadius = 5f;
+                    break;
+                case WeaponType.stone:
+                    noiseRadius = 10f;
+                    break;
+                case WeaponType.grenade:
+                    noiseRadius = 20f;
+                    break;
+            }
+            
+            noiseSpawner.SpawnNoise(noiseRadius, noiseDuration);
+
+            isGrounded = true;
+            // Destroy(gameObject); // e.g. for grenade
+        }
     }
 
     void HitEnemy()
     {
         // Blank for now
     }
-}
 
-public enum WeaponType
-{
-    stone = 0,
-    stick = 1,
-    grenade = 2
+    public enum WeaponType
+    {
+        stone = 0,
+        stick = 1,
+        grenade = 2
+    }
 }
