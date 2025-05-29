@@ -120,6 +120,9 @@ public class EnemyAI : MonoBehaviour
             currentState = EnemyState.Patrolling;
             pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
         }
+
+        Debug.DrawRay(navMeshAgent.destination + new Vector3(-1f, 0, -1f), new Vector3(2f, 0, 2f), Color.blue, 0.025f);
+        Debug.DrawRay(navMeshAgent.destination + new Vector3(-1f, 0, 1f), new Vector3(2f, 0, -2f), Color.blue, 0.025f);
     }
 
 
