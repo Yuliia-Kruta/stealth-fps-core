@@ -10,24 +10,29 @@ public class PlayerController : MonoBehaviour
     float xRotation;
     float yRotation;
     
-    // References to every enemy in the level
+    // References to every enemy that has line of sight with / is chasing the player
     // (This code assumes the number of enemies in a level never changes)
-    private EnemyAI[] enemies;
+    public List<EnemyAI> enemiesWithLineOfSight;
+    public List<EnemyAI> enemiesChasingWithLineOfSight;
 
     // Components
     public new Camera camera;
     private MovementScript movementScript;
 
+    // References to other objects
+    private UIController UIController;
+
     void Start()
     {
         movementScript = GetComponent<MovementScript>();
+        UIController = GameObject.FindObjectsOfType<UIController>()[0];
 
         // Lock the cursor to the center of the screen and hide it
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         // Find all enemies in the level
-        enemies = GameObject.FindObjectsOfType<EnemyAI>();
+        //enemies = GameObject.FindObjectsOfType<EnemyAI>();
     }
 
     
@@ -120,8 +125,20 @@ public class PlayerController : MonoBehaviour
         // ===================================
         //             Visibility
         // ===================================
-        
 
+        // Update the visibility eye UI element
+        if (enemiesChasingWithLineOfSight.Count > 0)
+        {
+            UIController.updateVisibilityEye("openred");
+        }
+        else if (enemiesWithLineOfSight.Count > 0)
+        {
+            UIController.updateVisibilityEye("open");
+        }
+        else
+        {
+            UIController.updateVisibilityEye("shut");
+        }
 
     }
 

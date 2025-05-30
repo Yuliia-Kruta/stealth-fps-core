@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 3682947066227382366}
   - component: {fileID: 3682947066227382365}
   - component: {fileID: 3682947066227382364}
+  - component: {fileID: 3473482346571805393}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -109,7 +110,7 @@ RectTransform:
   m_Children:
   - {fileID: 3682947065277063323}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -178,3 +179,15 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3473482346571805393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3682947066227382355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631dc2f1641fedf9a9fd73976e6749fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

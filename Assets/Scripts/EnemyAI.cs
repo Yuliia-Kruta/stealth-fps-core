@@ -10,11 +10,15 @@ public class EnemyAI : MonoBehaviour
 
     // If the player is in the enemy's vision
     private bool canSeePlayer = false;
+    // If the enemy can have line of sight to the player
+    private bool hasLineOfSight = false;
 
     // A reference to the player object, populated when this enemy first sees the player
     private GameObject playerObject;
+    private PlayerController playerController;
 
     // Components
+    private EnemyAI enemyAI;
     private Pathfinding pathfinding;
     private FollowPatrolRoute followPatrolRoute;
     private NavMeshAgent navMeshAgent;
@@ -42,12 +46,14 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         // Components
+        enemyAI = GetComponent<EnemyAI>();
         pathfinding = GetComponent<Pathfinding>();
         followPatrolRoute = GetComponent<FollowPatrolRoute>();
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         // Get a reference to the player
         playerObject = GameObject.FindObjectsOfType<PlayerController>()[0].gameObject;
+        playerController = playerObject.GetComponent<PlayerController>();
 
 
         // Set the destination to the patrol route
@@ -58,6 +64,28 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Check line of sight with the player
+        string[] includedLayers = {"Obstacle"};
+        hasLineOfSight = CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange);
+
+
+        // Tell the player if they have line of sight with this enemy
+        if (hasLineOfSight)
+        {
+            if (playerController.enemiesWithLineOfSight.Contains(enemyAI) == false)
+            {
+                playerController.enemiesWithLineOfSight.Add(enemyAI);
+            }
+        }
+        else 
+        {
+            if (playerController.enemiesWithLineOfSight.Contains(enemyAI) == true)
+            {
+                playerController.enemiesWithLineOfSight.Remove(enemyAI);
+            }
+        }
+
+
         // If this enemy is stunned
         if (stunTimer > 0f)
         {
@@ -76,15 +104,34 @@ public class EnemyAI : MonoBehaviour
             if (currentState == EnemyState.Chasing)
             {
                 // Check line of sight between this enemy and the player
-                string[] includedLayers = {"Obstacle"};
-                if (CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange))
+                if (hasLineOfSight)
                 {
                     canSeePlayer = true;
+
+                    // Tell the player we're chasing them with line of sight
+                    if (playerController.enemiesChasingWithLineOfSight.Contains(enemyAI) == false)
+                    {
+                        playerController.enemiesChasingWithLineOfSight.Add(enemyAI);
+                    }
                 }
                 else
                 {
                     canSeePlayer = false;
+
+                    // Tell the player we're no longer chasing them with line of sight
+                    if (playerController.enemiesChasingWithLineOfSight.Contains(enemyAI) == true)
+                    {
+                        playerController.enemiesChasingWithLineOfSight.Remove(enemyAI);
+                    }
                 }
+            }
+            else
+            {
+            // Tell the player we're no longer chasing them with line of sight
+            if (playerController.enemiesChasingWithLineOfSight.Contains(enemyAI) == true)
+            {
+                playerController.enemiesChasingWithLineOfSight.Remove(enemyAI);
+            }
             }
             
             
@@ -247,16 +294,28 @@ public class EnemyAI : MonoBehaviour
             }
         } 
 
+        // Set the colour of the debug line to gray if the player isn't being chased
+        Color debugLineColour = Color.gray;
 
         // Cast a ray toward the target, check if any objects were hit
         if (Physics.Raycast(fromPosition + Vector3.up, directionToTarget, out RaycastHit hit, distanceToTarget, layerMask))
         {
-            Debug.DrawRay(fromPosition, (hit.point - fromPosition), Color.red, 0.025f);
+            if (currentState == EnemyState.Chasing)
+            {
+                debugLineColour = Color.red;
+            }
+            Debug.DrawRay(fromPosition, (hit.point - fromPosition), debugLineColour, 0.025f);
+
             return false;
         }
         else
         {
-            Debug.DrawRay(fromPosition, (toPosition - fromPosition), Color.green, 0.025f);
+            if (currentState == EnemyState.Chasing)
+            {
+                debugLineColour = Color.green;
+            }
+            Debug.DrawRay(fromPosition, (toPosition - fromPosition), debugLineColour, 0.025f);
+
             return true;
         }
     }
