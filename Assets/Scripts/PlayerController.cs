@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
 
     float xRotation;
     float yRotation;
-    
-    // References to every enemy that has line of sight with / is chasing the player
+
+    // References to every enemy in the level
     // (This code assumes the number of enemies in a level never changes)
     public List<EnemyAI> enemiesWithLineOfSight;
     public List<EnemyAI> enemiesChasingWithLineOfSight;
@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour
     // Components
     public new Camera camera;
     private MovementScript movementScript;
+    private PlayerInventory playerInventory;
+
+    // For weapons
+    public float pickupRange = 3f;
+    public LayerMask weaponLayer;
+    public float throwForce = 20f;
 
     // References to other objects
     private UIController UIController;
@@ -36,7 +42,7 @@ public class PlayerController : MonoBehaviour
         //enemies = GameObject.FindObjectsOfType<EnemyAI>();
     }
 
-    
+
     void Update()
     {
         // ===================================
@@ -106,7 +112,6 @@ public class PlayerController : MonoBehaviour
             // Check if the moving script component is applied
             if (movementScript != null)
             {
-                
                 // Turn the player input (-1.0 to 1.0) into a normalized direction
                 var direction = new Vector2(HorizontalInput, VerticalInput).normalized;
 
@@ -126,6 +131,7 @@ public class PlayerController : MonoBehaviour
         // ===================================
         //             Visibility
         // ===================================
+        
 
         // Update the visibility eye UI element
         if (enemiesChasingWithLineOfSight.Count > 0)
@@ -140,9 +146,43 @@ public class PlayerController : MonoBehaviour
         {
             UIController.updateVisibilityEye("shut");
         }
+        // ===================================
+        //             Weapon pickup
+        // ===================================
+        // Fix right keys later
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("Trying to pickup");
+            TryPickUpWeapon();
+        }
 
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) playerInventory.EquipWeapon(WeaponType.stone);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) playerInventory.EquipWeapon(WeaponType.stick);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) playerInventory.EquipWeapon(WeaponType.grenade);
+
+
+        if (Input.GetKeyDown(KeyCode.Y)) // Right-click to throw
+        {
+            Vector3 throwDirection = camera.transform.forward; // throw forward from camera view
+            playerInventory.ThrowCurrentWeapon(throwDirection, throwForce);
+        }
     }
 
+    void TryPickUpWeapon()
+    {
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+        if (Physics.SphereCast(ray, 0.3f, out hit, pickupRange, weaponLayer))
+        {
+            Weapon weapon = hit.collider.GetComponent<Weapon>();
+            if (weapon != null)
+            {
+                Debug.Log("Picked up " + weapon.WeaponType);
+                playerInventory.AddWeapon(weapon.WeaponType, weapon);
+            }
+        }
+    }
 
     // Rotate a Vector2 by an angle (used just for movement calculation, can move elsewhere later)
     Vector2 RotateVector(Vector2 vector, float angleDegrees)
@@ -150,7 +190,7 @@ public class PlayerController : MonoBehaviour
         float radians = angleDegrees * Mathf.Deg2Rad;
         float cos = Mathf.Cos(radians);
         float sin = Mathf.Sin(radians);
-        
+
         return new Vector2(
             vector.x * cos - vector.y * sin,
             vector.x * sin + vector.y * cos

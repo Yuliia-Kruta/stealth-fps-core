@@ -3,29 +3,46 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
+public enum WeaponType
+{
+    None = -1,
+    stone = 0,
+    stick = 1,
+    grenade = 2
+}
 public class Weapon : MonoBehaviour
 {
-
-    // Set default weapon properties
+    // Default weapon properties
     private float damage = 0;
     private float stunDuration = 0;
     private float explosionSize = 0;
 
     // Check whether the object is in flight
     private bool isGrounded = false;
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+        set { isGrounded = value; }
+    }
     
     private NoiseSpawner noiseSpawner;
 
     // Reference to the WeaponType enum
     [SerializeField]
     private WeaponType weaponType;
+    
+    
+    public WeaponType WeaponType
+    {
+        get { return weaponType; }
+        set { weaponType = value; }
+    }
 
 
     // Start is called before the first frame update
     void Start()
     { 
         WeaponSetup();
-
         noiseSpawner = GetComponent<NoiseSpawner>();
         if (noiseSpawner == null)
         {
@@ -93,16 +110,6 @@ public class Weapon : MonoBehaviour
     {
         // Blank for now
     }
-
-  
-}
-
-// Returns list of weapons
-// Weapon enum is in Global Space for accessibility  
-public enum WeaponType
-{
-    stone = 0,
-    stick = 1,
-    grenade = 2
+    
 }
     
