@@ -15,8 +15,9 @@ public class Weapon : MonoBehaviour
     
     private NoiseSpawner noiseSpawner;
 
-    // 
-    public WeaponType weaponType;
+    // reference to the WeaponType enum
+    [SerializeField]
+    private WeaponType weaponType;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +33,7 @@ public class Weapon : MonoBehaviour
 
     void WeaponSetup()
     {
-        // Should WeaponSetup be public so the NoiseScript can read it?
+        // Set the properties for each weapon
         switch (weaponType)
         {
             // Set properties for the stone weapon
@@ -91,10 +92,14 @@ public class Weapon : MonoBehaviour
         // Blank for now
     }
 
-    public enum WeaponType
-    {
-        stone = 0,
-        stick = 1,
-        grenade = 2
-    }
+  
 }
+
+// Weapon enum is in Global Space so the UIController can access it
+public enum WeaponType
+{
+    stone = 0,
+    stick = 1,
+    grenade = 2
+}
+    
