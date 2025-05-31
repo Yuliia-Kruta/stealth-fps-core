@@ -6,8 +6,10 @@ public class PatrolNode : MonoBehaviour
 {
     // Which route this node is a part of
     public int routeID;
+
     // Which node this is, sequentially
     public int nodeID;
+
 
     /*
     A patrol "route" is made up of these patrol nodes.

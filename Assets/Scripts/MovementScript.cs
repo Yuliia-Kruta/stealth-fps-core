@@ -6,16 +6,20 @@ public class MovementScript : MonoBehaviour
 {
     // The velocity this rigidbody has when it loads into the scene
     public Vector3 initialVelocity = Vector3.zero;
+
     // The speeds for the different states of movement
     public float walkSpeed = 5.0f;
     public float sprintSpeed = 8.5f;
     public float crouchSpeed = 2.5f;
+
     // Noise levels for the different states of movement
     public float walkNoise = 3.0f;
     public float sprintNoise = 8.0f;
     public float crouchNoise = 1.0f;
+
     // How quickly the rigidbody accelerates
     public float accelerationSpeed = 500.0f;
+
 
     // The different states of movement
     public enum MovementStates
@@ -29,7 +33,6 @@ public class MovementScript : MonoBehaviour
 
     private Rigidbody rb;
     private NoiseSpawner noiseSpawner;
-
 
 
     void Start()

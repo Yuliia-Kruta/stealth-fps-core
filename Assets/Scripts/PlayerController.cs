@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     // References to other objects
     private UIController UIController;
 
+
     void Start()
     {
         movementScript = GetComponent<MovementScript>();

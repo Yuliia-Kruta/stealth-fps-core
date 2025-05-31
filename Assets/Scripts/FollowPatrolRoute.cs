@@ -8,8 +8,10 @@ public class FollowPatrolRoute : MonoBehaviour
     //private bool isPatrolling = true;
     // The specific route this object is following
     public int routeID;
+
     // All the nodes that exist in this path. The array is populated during Start()
     private PatrolNode[] routeNodes;
+
     // The node that the object is meant to be going towards
     public PatrolNode destinationNode;
 

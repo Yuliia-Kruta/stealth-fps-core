@@ -7,12 +7,14 @@ public class NoiseSpawner : MonoBehaviour
     public float noiseRadius = 10f;
     public float noiseDuration = 1f;
 
+
     public void SpawnNoise(float radius, float duration)
     {
         noiseRadius = radius;
         noiseDuration = duration;
         StartCoroutine(SpawnNoiseCoroutine());
     }
+
 
     private IEnumerator SpawnNoiseCoroutine()
     {
@@ -31,6 +33,7 @@ public class NoiseSpawner : MonoBehaviour
 
         yield return new WaitForSeconds(noiseDuration);
     }
+
 
     private void DebugDrawNoise(Vector3 center, float radius, float duration)
     {

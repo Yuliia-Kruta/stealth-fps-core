@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-
     // The position the NavMeshAgent should be pathing towards
     private Vector3 destination;
 
@@ -17,6 +16,7 @@ public class Pathfinding : MonoBehaviour
         // Components
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
+
 
     // Updates the NavMeshAgent's destination
     public void updateDestination(Vector3 newDestination)

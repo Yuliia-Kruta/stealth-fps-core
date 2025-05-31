@@ -11,24 +11,18 @@ public class UIController : MonoBehaviour
     private Image stoneIcon;
     private Image grenadeIcon;
 
-    // reference to the WeaponType enum
+    // Reference to the WeaponType enum
     private WeaponType weaponType;
+
 
     void Start()
     {
         visibilityEyeImage = this.gameObject.transform.GetChild(0).GetComponent<Image>();
 
-        // Retriving components from the children of the child "WeaponHUD"
+        // Get components from the children of the child "WeaponHUD"
         stickIcon = this.gameObject.transform.GetChild(1).GetChild(0).GetComponent<Image>();
         stoneIcon = this.gameObject.transform.GetChild(1).GetChild(1).GetComponent<Image>();
         grenadeIcon = this.gameObject.transform.GetChild(1).GetChild(2).GetComponent<Image>();
-
-    }
-
-
-    void Update()
-    {
-        
     }
 
 
@@ -49,19 +43,20 @@ public class UIController : MonoBehaviour
         }
     }
 
+
     // Update the weapon icon UI elements
     // To be called when the the player swaps an object
     // Waiting for the swap function and HUD script to be committed
     public void updateWeaponSelection()
     {
 
-        // set Icons back to the default image
+        // Set Icons back to the greyed-out image
         stickIcon.sprite = Resources.Load<Sprite>("Stick");
         stoneIcon.sprite = Resources.Load<Sprite>("Stone");
         grenadeIcon.sprite = Resources.Load<Sprite>("Grenade");
 
 
-        // Load weapon selected image based on Weapon Type
+        // Load 'Selected_Weapon' images based on the WeaponType
         switch (weaponType)
         {
             case WeaponType.stone:

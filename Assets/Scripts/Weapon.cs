@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    // Default weapon properties
+
+    // Set default weapon properties
     private float damage = 0;
     private float stunDuration = 0;
     private float explosionSize = 0;
@@ -15,15 +16,16 @@ public class Weapon : MonoBehaviour
     
     private NoiseSpawner noiseSpawner;
 
-    // reference to the WeaponType enum
+    // Reference to the WeaponType enum
     [SerializeField]
     private WeaponType weaponType;
 
+
     // Start is called before the first frame update
     void Start()
-    {
-        // Change the weapon to the right type 
+    { 
         WeaponSetup();
+
         noiseSpawner = GetComponent<NoiseSpawner>();
         if (noiseSpawner == null)
         {
@@ -33,18 +35,18 @@ public class Weapon : MonoBehaviour
 
     void WeaponSetup()
     {
-        // Set the properties for each weapon
+        // Set the weapon's properties to the right type
         switch (weaponType)
         {
             // Set properties for the stone weapon
             case WeaponType.stone:
                 stunDuration = 5f;
                 break;
-            // Set properties for the stick weapon
+            // Set for the stick weapon
             case WeaponType.stick:
                 stunDuration = 2f;
                 break;
-            // Set properties for the grenade weapon
+            // Set for the grenade weapon
             case WeaponType.grenade:
                 stunDuration = 10f;
                 break;
@@ -95,7 +97,8 @@ public class Weapon : MonoBehaviour
   
 }
 
-// Weapon enum is in Global Space so the UIController can access it
+// Returns list of weapons
+// Weapon enum is in Global Space for accessibility  
 public enum WeaponType
 {
     stone = 0,
