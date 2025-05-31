@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         movementScript = GetComponent<MovementScript>();
-        UIController = GameObject.FindObjectsOfType<UIController>()[0];
+        //UIController = GameObject.FindObjectsOfType<UIController>()[0];
+        playerInventory = GetComponent<PlayerInventory>();
 
         // Lock the cursor to the center of the screen and hide it
         Cursor.lockState = CursorLockMode.Locked;
@@ -134,7 +135,7 @@ public class PlayerController : MonoBehaviour
         
 
         // Update the visibility eye UI element
-        if (enemiesChasingWithLineOfSight.Count > 0)
+        /*if (enemiesChasingWithLineOfSight.Count > 0)
         {
             UIController.updateVisibilityEye("openred");
         }
@@ -145,7 +146,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             UIController.updateVisibilityEye("shut");
-        }
+        }*/
         // ===================================
         //             Weapon pickup
         // ===================================
