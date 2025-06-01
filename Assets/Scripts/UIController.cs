@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 {
     private Image visibilityEyeImage;
 
+    // Set visual weapon selection
     private Image stickIcon;
     private Image stoneIcon;
     private Image grenadeIcon;
@@ -15,6 +16,7 @@ public class UIController : MonoBehaviour
     // Reference to the WeaponType enum
     //private WeaponType weaponType;
 
+    // Set visual weapon count
     public TMPro.TMP_Text stickCount;
     public TMPro.TMP_Text stoneCount;
     public TMPro.TMP_Text grenadeCount;

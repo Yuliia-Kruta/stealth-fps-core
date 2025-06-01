@@ -20,7 +20,7 @@ public class PlayerInventory : MonoBehaviour
 
     public Weapon currentWeapon;
 
-    // Reference for visually displaying weapon count  
+    // Reference for visually displaying weapon count and selection  
     private UIController UIController;
 
     void Start()
@@ -29,7 +29,7 @@ public class PlayerInventory : MonoBehaviour
         weaponInventory[WeaponType.stick] = new WeaponSlot { count = 0 };
         weaponInventory[WeaponType.grenade] = new WeaponSlot { count = 0 };
 
-        UIController = GetComponent<UIController>();
+        UIController = GameObject.FindObjectsOfType<UIController>()[0];
     }
 
 
@@ -47,6 +47,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         weaponInventory[type].count++;
+        TrackWeaponCount(); // <-------------------------
 
         if (currentWeapon == null || !currentWeapon.gameObject.activeInHierarchy)
         {
@@ -64,6 +65,8 @@ public class PlayerInventory : MonoBehaviour
 
     public void EquipWeapon(WeaponType type)
     {
+        // Swap selected weapon in the UI
+        UIController.UpdateWeaponSelection(type);
 
         if (!weaponInventory.ContainsKey(type) || weaponInventory[type].count <= 0)
         {
@@ -131,6 +134,7 @@ public class PlayerInventory : MonoBehaviour
 
         // Decrease count
         weaponInventory[currentType].count--;
+        TrackWeaponCount(); // <-------------------------
 
         // Detach and throw
         currentWeapon.transform.SetParent(null);
@@ -162,22 +166,33 @@ public class PlayerInventory : MonoBehaviour
             int count = slot.count;
 
             Debug.Log($"WeaponType: {type}, WeaponPrefab: {weaponName}, Count: {count}");
+        }    
+    }
 
 
-            //temp
-            
-            /*if (type == WeaponType.stick)
-            {           
+    // Seperate from LogWeaponInventory so it can be called at different times
+    public void TrackWeaponCount()
+    {
+        foreach (var entry in weaponInventory)
+        {
+            WeaponType type = entry.Key;
+            WeaponSlot slot = entry.Value;
+
+            int count = slot.count;
+
+            // Update weapon count visually
+            if (type == WeaponType.stick)
+            {
                 UIController.stickCount.text = count.ToString();
             }
-            else if(type == WeaponType.stone)
+            else if (type == WeaponType.stone)
             {
                 UIController.stoneCount.text = count.ToString();
             }
             else if (type == WeaponType.grenade)
             {
                 UIController.grenadeCount.text = count.ToString();
-            }*/
-        }    
+            }
+        }       
     }
 }

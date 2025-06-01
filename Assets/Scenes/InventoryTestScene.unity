@@ -309,8 +309,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0572bafde345089f4dd40f17950fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponHoldPoint: {fileID: 0}
+  weaponHoldPoint: {fileID: 557930066}
   currentWeapon: {fileID: 0}
+--- !u!4 &557930066 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1667758183210448043, guid: 023bfc0b2078d51408dc539a5b50ccd4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2098889369}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &646708971
 PrefabInstance:
   m_ObjectHideFlags: 0
