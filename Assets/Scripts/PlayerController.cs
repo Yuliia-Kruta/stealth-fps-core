@@ -27,14 +27,11 @@ public class PlayerController : MonoBehaviour
 
     // References to other objects
     private UIController UIController;
-    private UIController weaponUI;
 
     void Start()
     {
         movementScript = GetComponent<MovementScript>();
         UIController = GameObject.FindObjectsOfType<UIController>()[0];
-
-        weaponUI = GetComponent<UIController>();
 
         playerInventory = GetComponent<PlayerInventory>();
 
@@ -176,17 +173,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             playerInventory.EquipWeapon(WeaponType.stick);
-            weaponUI?.UpdateWeaponSelection(WeaponType.stick); //issue
+            UIController.UpdateWeaponSelection(WeaponType.stick); //issue
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             playerInventory.EquipWeapon(WeaponType.stone);
-            weaponUI?.UpdateWeaponSelection(WeaponType.stone); //issues
+            UIController.UpdateWeaponSelection(WeaponType.stone); //issues
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             playerInventory.EquipWeapon(WeaponType.grenade);
-            weaponUI?.UpdateWeaponSelection(WeaponType.grenade); //issues
+            UIController.UpdateWeaponSelection(WeaponType.grenade); //issues
         }
 
 
