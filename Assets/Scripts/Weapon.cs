@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public enum WeaponType
 {
@@ -19,12 +18,6 @@ public class Weapon : MonoBehaviour
 
     // Check whether the oject is grounded
     public bool isGrounded;
-
-    /*public bool IsGrounded
-    {
-        get { return isTemp; }
-        set { isTemp = value; }
-    }*/
     
     private NoiseSpawner noiseSpawner;
 
@@ -44,13 +37,15 @@ public class Weapon : MonoBehaviour
     void Start()
     { 
         WeaponSetup();
+
         noiseSpawner = GetComponent<NoiseSpawner>();
         if (noiseSpawner == null)
         {
             noiseSpawner = gameObject.AddComponent<NoiseSpawner>();
         }
 
-        isGrounded = false;
+        // Set isGrounded to False on start otherwise it triggers a 'false positive'
+        isGrounded = false; 
     }
 
     void WeaponSetup()
@@ -76,19 +71,19 @@ public class Weapon : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-         // Check if we hit an enemy
-         EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
-         if (enemy != null && !isGrounded)
-         {
-                // Apply stun based on weapon's stun duration
-                enemy.Stun(stunDuration);
-         }
-
-        Debug.Log($"isGrounded = {isGrounded}");
+        // Check if we hit an enemy
+        EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+        if (enemy != null && !isGrounded)
+        {
+            // Apply stun based on weapon's stun duration
+            enemy.Stun(stunDuration);
+        }
+        
         if (isGrounded == true)
         {
-            Debug.Log("IsGrounded has been set to true");
             // Weapon is grounded, but not from initial scene start
+            Debug.Log("Weapon has made impact");
+            
 
             float noiseRadius = 0f;
             float noiseDuration = 1f;
@@ -108,13 +103,15 @@ public class Weapon : MonoBehaviour
 
             noiseSpawner.SpawnNoise(noiseRadius, noiseDuration);
 
+            // Set any Weapon with isExplosive attached to non-rusable
             if (isExplosive == true)
             {
                 Destroy(gameObject);
                 Debug.Log("BOOM!");
             }
 
-            //isGrounded = false;
+            // Set isGrounded back to false so weapons can be reused
+            isGrounded = false;
         }
     } 
 }

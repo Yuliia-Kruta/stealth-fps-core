@@ -23,7 +23,7 @@ public class PlayerInventory : MonoBehaviour
     // Reference for visually displaying weapon count and selection  
     private UIController UIController;
 
-    // Reference for getting bool isFlying 
+    // Reference for getting bool isGrounded 
     private Weapon weaponScript;
 
     void Start()
@@ -34,7 +34,6 @@ public class PlayerInventory : MonoBehaviour
 
         UIController = GameObject.FindObjectsOfType<UIController>()[0];
         weaponScript = GameObject.FindObjectsOfType<Weapon>()[0];
-        //weaponScript = GetComponent<Weapon>();
     }
 
     public void AddWeapon(WeaponType type, Weapon weapon)
@@ -51,7 +50,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         weaponInventory[type].count++;
-        TrackWeaponCount(); // <-------------------------
+        TrackWeaponCount();
 
         if (currentWeapon == null || !currentWeapon.gameObject.activeInHierarchy)
         {
@@ -138,15 +137,14 @@ public class PlayerInventory : MonoBehaviour
 
         // Decrease count
         weaponInventory[currentType].count--;
-        TrackWeaponCount(); // <-------------------------
+        TrackWeaponCount();
 
         // Detach and throw
         currentWeapon.transform.SetParent(null);
         currentWeapon.GetComponent<Collider>().enabled = true;
 
-        // Weapon is longer initally grounded
-        
-        if (!currentWeapon.isGrounded) // <-------------------------
+        // Check if the weapon is no longer initally grounded
+        if (!currentWeapon.isGrounded)
         {
             Debug.Log("Weapon is now falling");
             currentWeapon.isGrounded = true;
