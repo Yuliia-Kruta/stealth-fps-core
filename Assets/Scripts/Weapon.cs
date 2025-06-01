@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public enum WeaponType
 {
@@ -13,17 +14,17 @@ public enum WeaponType
 public class Weapon : MonoBehaviour
 {
     // Default weapon properties
-    private float damage = 0;
     private float stunDuration = 0;
-    private float explosionSize = 0;
+    private bool isExplosive = false;
 
-    // Check whether the object is in flight
-    private bool isGrounded = false;
-    public bool IsGrounded
+    // Check whether the oject is grounded
+    public bool isGrounded;
+
+    /*public bool IsGrounded
     {
-        get { return isGrounded; }
-        set { isGrounded = value; }
-    }
+        get { return isTemp; }
+        set { isTemp = value; }
+    }*/
     
     private NoiseSpawner noiseSpawner;
 
@@ -48,6 +49,8 @@ public class Weapon : MonoBehaviour
         {
             noiseSpawner = gameObject.AddComponent<NoiseSpawner>();
         }
+
+        isGrounded = false;
     }
 
     void WeaponSetup()
@@ -66,23 +69,27 @@ public class Weapon : MonoBehaviour
             // Set for the grenade weapon
             case WeaponType.grenade:
                 stunDuration = 10f;
+                isExplosive = true;
                 break;
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Check if we hit an enemy
-        EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
-        if (enemy != null && !isGrounded)
-        {
-            // Apply stun based on weapon's stun duration
-            enemy.Stun(stunDuration);
-        }
+         // Check if we hit an enemy
+         EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+         if (enemy != null && !isGrounded)
+         {
+                // Apply stun based on weapon's stun duration
+                enemy.Stun(stunDuration);
+         }
 
-        if (!isGrounded)
+        Debug.Log($"isGrounded = {isGrounded}");
+        if (isGrounded == true)
         {
-            // Emit noise based on weapon type
+            Debug.Log("IsGrounded has been set to true");
+            // Weapon is grounded, but not from initial scene start
+
             float noiseRadius = 0f;
             float noiseDuration = 1f;
 
@@ -97,19 +104,18 @@ public class Weapon : MonoBehaviour
                 case WeaponType.grenade:
                     noiseRadius = 20f;
                     break;
-            }
-            
+                }
+
             noiseSpawner.SpawnNoise(noiseRadius, noiseDuration);
 
-            isGrounded = true;
-            // Destroy(gameObject); // e.g. for grenade
-        }
-    }
+            if (isExplosive == true)
+            {
+                Destroy(gameObject);
+                Debug.Log("BOOM!");
+            }
 
-    void HitEnemy()
-    {
-        // Blank for now
-    }
-    
+            //isGrounded = false;
+        }
+    } 
 }
     
