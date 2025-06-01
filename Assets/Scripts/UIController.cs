@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
@@ -12,8 +13,11 @@ public class UIController : MonoBehaviour
     private Image grenadeIcon;
 
     // Reference to the WeaponType enum
-    private WeaponType weaponType;
+    //private WeaponType weaponType;
 
+    public TMPro.TMP_Text stickCount;
+    public TMPro.TMP_Text stoneCount;
+    public TMPro.TMP_Text grenadeCount;
 
     void Start()
     {
@@ -23,11 +27,15 @@ public class UIController : MonoBehaviour
         stickIcon = this.gameObject.transform.GetChild(1).GetChild(0).GetComponent<Image>();
         stoneIcon = this.gameObject.transform.GetChild(1).GetChild(1).GetComponent<Image>();
         grenadeIcon = this.gameObject.transform.GetChild(1).GetChild(2).GetComponent<Image>();
+
+        // Find direct component, instead of getting them from the child of a child of another child
+        stickCount = GameObject.Find("StickCount").GetComponent<TMP_Text>();
+        stoneCount = GameObject.Find("StoneCount").GetComponent<TMP_Text>();
+        grenadeCount = GameObject.Find("GrenadeCount").GetComponent<TMP_Text>();
     }
 
-
     // Update the visibility eye UI element
-    public void updateVisibilityEye(string state)
+    public void UpdateVisibilityEye(string state)
     {
         switch (state)
         {
@@ -45,9 +53,7 @@ public class UIController : MonoBehaviour
 
 
     // Update the weapon icon UI elements
-    // To be called when the the player swaps an object
-    // Waiting for the swap function and HUD script to be committed
-    public void updateWeaponSelection()
+    public void UpdateWeaponSelection(WeaponType type)
     {
 
         // Set Icons back to the greyed-out image
@@ -57,7 +63,7 @@ public class UIController : MonoBehaviour
 
 
         // Load 'Selected_Weapon' images based on the WeaponType
-        switch (weaponType)
+        switch (type)
         {
             case WeaponType.stone:
                 stoneIcon.sprite = Resources.Load<Sprite>("Selected_Stone");
@@ -67,6 +73,9 @@ public class UIController : MonoBehaviour
                 break;
             case WeaponType.grenade:
                 grenadeIcon.sprite = Resources.Load<Sprite>("Selected_Grenade");
+                break;
+            case WeaponType.None:
+                Debug.Log("No selected weapon to highlight");
                 break;
         }
     }

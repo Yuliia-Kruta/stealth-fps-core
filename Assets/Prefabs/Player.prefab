@@ -238,7 +238,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraSensitivityX: 2000
   cameraSensitivityY: 2000
+  enemiesWithLineOfSight: []
+  enemiesChasingWithLineOfSight: []
   camera: {fileID: 4189831295237782382}
+  pickupRange: 3
+  weaponLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  throwForce: 20
 --- !u!114 &1074673523302088922
 MonoBehaviour:
   m_ObjectHideFlags: 0

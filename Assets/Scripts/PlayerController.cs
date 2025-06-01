@@ -27,12 +27,15 @@ public class PlayerController : MonoBehaviour
 
     // References to other objects
     private UIController UIController;
-
+    private UIController weaponUI;
 
     void Start()
     {
         movementScript = GetComponent<MovementScript>();
         UIController = GameObject.FindObjectsOfType<UIController>()[0];
+
+        weaponUI = GetComponent<UIController>();
+
         playerInventory = GetComponent<PlayerInventory>();
 
         // Lock the cursor to the center of the screen and hide it
@@ -137,15 +140,15 @@ public class PlayerController : MonoBehaviour
         // Update the visibility eye UI element
         if (enemiesChasingWithLineOfSight.Count > 0)
         {
-            UIController.updateVisibilityEye("openred");
+            UIController.UpdateVisibilityEye("openred");
         }
         else if (enemiesWithLineOfSight.Count > 0)
         {
-            UIController.updateVisibilityEye("open");
+            UIController.UpdateVisibilityEye("open");
         }
         else
         {
-            UIController.updateVisibilityEye("shut");
+            UIController.UpdateVisibilityEye("shut");
         }
 
 
@@ -164,9 +167,32 @@ public class PlayerController : MonoBehaviour
         // If (Input.GetMouseButtonDown(1))
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) playerInventory.EquipWeapon(WeaponType.stone);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) playerInventory.EquipWeapon(WeaponType.stick);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) playerInventory.EquipWeapon(WeaponType.grenade);
+        // ===================================
+        //             Swap weapon
+        // ===================================
+
+
+        // Swap between weapons if 1,2,3 on the keyboard is pressed
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            playerInventory.EquipWeapon(WeaponType.stick);
+            weaponUI?.UpdateWeaponSelection(WeaponType.stick); //issue
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            playerInventory.EquipWeapon(WeaponType.stone);
+            weaponUI?.UpdateWeaponSelection(WeaponType.stone); //issues
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            playerInventory.EquipWeapon(WeaponType.grenade);
+            weaponUI?.UpdateWeaponSelection(WeaponType.grenade); //issues
+        }
+
+
+        // ===================================
+        //             Throw weapon
+        // ===================================
 
 
         if (Input.GetKeyDown(KeyCode.Y)) // Right-click to throw

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,12 +20,16 @@ public class PlayerInventory : MonoBehaviour
 
     public Weapon currentWeapon;
 
+    // Reference for visually displaying weapon count  
+    private UIController UIController;
 
     void Start()
     {
         weaponInventory[WeaponType.stone] = new WeaponSlot { count = 0 };
         weaponInventory[WeaponType.stick] = new WeaponSlot { count = 0 };
         weaponInventory[WeaponType.grenade] = new WeaponSlot { count = 0 };
+
+        UIController = GetComponent<UIController>();
     }
 
 
@@ -59,6 +64,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void EquipWeapon(WeaponType type)
     {
+
         if (!weaponInventory.ContainsKey(type) || weaponInventory[type].count <= 0)
         {
             Debug.Log($"You do not have any {type}s left!");
@@ -156,6 +162,22 @@ public class PlayerInventory : MonoBehaviour
             int count = slot.count;
 
             Debug.Log($"WeaponType: {type}, WeaponPrefab: {weaponName}, Count: {count}");
-        }
+
+
+            //temp
+            
+            /*if (type == WeaponType.stick)
+            {           
+                UIController.stickCount.text = count.ToString();
+            }
+            else if(type == WeaponType.stone)
+            {
+                UIController.stoneCount.text = count.ToString();
+            }
+            else if (type == WeaponType.grenade)
+            {
+                UIController.grenadeCount.text = count.ToString();
+            }*/
+        }    
     }
 }

@@ -1029,8 +1029,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3674548215164477415, guid: 023bfc0b2078d51408dc539a5b50ccd4,
         type: 3}
+      propertyPath: throwForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674548215164477415, guid: 023bfc0b2078d51408dc539a5b50ccd4,
+        type: 3}
       propertyPath: pickupRange
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674548215164477415, guid: 023bfc0b2078d51408dc539a5b50ccd4,
+        type: 3}
+      propertyPath: weaponLayer.m_Bits
+      value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 4350202146339343685, guid: 023bfc0b2078d51408dc539a5b50ccd4,
         type: 3}
