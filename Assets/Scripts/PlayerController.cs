@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         movementScript = GetComponent<MovementScript>();
-        //UIController = GameObject.FindObjectsOfType<UIController>()[0];
+        UIController = GameObject.FindObjectsOfType<UIController>()[0];
         playerInventory = GetComponent<PlayerInventory>();
 
         // Lock the cursor to the center of the screen and hide it
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
         
 
         // Update the visibility eye UI element
-        /*if (enemiesChasingWithLineOfSight.Count > 0)
+        if (enemiesChasingWithLineOfSight.Count > 0)
         {
             UIController.updateVisibilityEye("openred");
         }
@@ -146,16 +146,22 @@ public class PlayerController : MonoBehaviour
         else
         {
             UIController.updateVisibilityEye("shut");
-        }*/
+        }
+
+
         // ===================================
         //             Weapon pickup
         // ===================================
+
+
         // Fix right keys later
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Trying to pickup");
             TryPickUpWeapon();
         }
+        // Pick Up requires right mouse button click.
+        // If (Input.GetMouseButtonDown(1))
 
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) playerInventory.EquipWeapon(WeaponType.stone);
@@ -168,6 +174,8 @@ public class PlayerController : MonoBehaviour
             Vector3 throwDirection = camera.transform.forward; // throw forward from camera view
             playerInventory.ThrowCurrentWeapon(throwDirection, throwForce);
         }
+        // Throwing requires left mouse button click.
+        // If (Input.GetMouseButtonDown(0))
     }
 
     void TryPickUpWeapon()
