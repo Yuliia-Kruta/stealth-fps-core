@@ -145,10 +145,11 @@ public class PlayerInventory : MonoBehaviour
         currentWeapon.GetComponent<Collider>().enabled = true;
 
         // Weapon is longer initally grounded
-        if (!weaponScript.isGrounded) // <-------------------------
+        
+        if (!currentWeapon.isGrounded) // <-------------------------
         {
             Debug.Log("Weapon is now falling");
-            weaponScript.isGrounded = true;
+            currentWeapon.isGrounded = true;
         }
 
 
