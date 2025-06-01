@@ -10,6 +10,7 @@ public enum WeaponType
     stick = 1,
     grenade = 2
 }
+
 public class Weapon : MonoBehaviour
 {
     // Default weapon properties
@@ -24,7 +25,6 @@ public class Weapon : MonoBehaviour
     // Reference to the WeaponType enum
     [SerializeField]
     private WeaponType weaponType;
-    
     
     public WeaponType WeaponType
     {
@@ -77,12 +77,12 @@ public class Weapon : MonoBehaviour
         {
             // Apply stun based on weapon's stun duration
             enemy.Stun(stunDuration);
-        }
-        
+        }        
+
         if (isGrounded == true)
         {
             // Weapon is grounded, but not from initial scene start
-            Debug.Log("Weapon has made impact");
+            Debug.Log("<color='yellow'>Weapon has made impact</color>");
             
 
             float noiseRadius = 0f;
@@ -103,11 +103,12 @@ public class Weapon : MonoBehaviour
 
             noiseSpawner.SpawnNoise(noiseRadius, noiseDuration);
 
+
             // Set any Weapon with isExplosive attached to non-rusable
             if (isExplosive == true)
             {
                 Destroy(gameObject);
-                Debug.Log("BOOM!");
+                Debug.Log("<color='orange'>BOOM!</color>");
             }
 
             // Set isGrounded back to false so weapons can be reused
@@ -115,4 +116,3 @@ public class Weapon : MonoBehaviour
         }
     } 
 }
-    

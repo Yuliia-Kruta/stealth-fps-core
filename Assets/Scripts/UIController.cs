@@ -13,13 +13,11 @@ public class UIController : MonoBehaviour
     private Image stoneIcon;
     private Image grenadeIcon;
 
-    // Reference to the WeaponType enum
-    //private WeaponType weaponType;
-
     // Set visual weapon count
     public TMPro.TMP_Text stickCount;
     public TMPro.TMP_Text stoneCount;
     public TMPro.TMP_Text grenadeCount;
+
 
     void Start()
     {

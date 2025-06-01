@@ -202,7 +202,7 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Error! Enemy AI found no new destination node after colliding with a patrol node.");
+                Debug.LogError("<color='red'>Error!</color> Enemy AI found no new destination node after colliding with a patrol node.");
             }
 
             return;

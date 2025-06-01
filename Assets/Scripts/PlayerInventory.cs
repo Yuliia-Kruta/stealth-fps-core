@@ -26,12 +26,14 @@ public class PlayerInventory : MonoBehaviour
     // Reference for getting bool isGrounded 
     private Weapon weaponScript;
 
+
     void Start()
     {
         weaponInventory[WeaponType.stone] = new WeaponSlot { count = 0 };
         weaponInventory[WeaponType.stick] = new WeaponSlot { count = 0 };
         weaponInventory[WeaponType.grenade] = new WeaponSlot { count = 0 };
 
+        // Get components 
         UIController = GameObject.FindObjectsOfType<UIController>()[0];
         weaponScript = GameObject.FindObjectsOfType<Weapon>()[0];
     }
@@ -143,10 +145,11 @@ public class PlayerInventory : MonoBehaviour
         currentWeapon.transform.SetParent(null);
         currentWeapon.GetComponent<Collider>().enabled = true;
 
+
         // Check if the weapon is no longer initally grounded
         if (!currentWeapon.isGrounded)
         {
-            Debug.Log("Weapon is now falling");
+            Debug.Log("<color='yellow'>Weapon is now falling</color>");
             currentWeapon.isGrounded = true;
         }
 
@@ -177,7 +180,7 @@ public class PlayerInventory : MonoBehaviour
             int count = slot.count;
 
             Debug.Log($"WeaponType: {type}, WeaponPrefab: {weaponName}, Count: {count}");
-        }    
+        }
     }
   
 

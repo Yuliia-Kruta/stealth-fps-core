@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Movement script not found!");
+                Debug.Log("<color='red'>Error!</color> Movement script not found!");
             }
         }
 
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
         // ===================================
         //             Visibility
         // ===================================
-        
+
 
         // Update the visibility eye UI element
         if (enemiesChasingWithLineOfSight.Count > 0)

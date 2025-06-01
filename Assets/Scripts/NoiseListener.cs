@@ -32,14 +32,14 @@ public class NoiseListener : MonoBehaviour
                     }
                     catch
                     {
-                        Debug.LogError("Error! mainScript doesn't have the OnNoiseReceived method!");
+                        Debug.LogError("<color='red'>Error!</color> mainScript doesn't have the OnNoiseReceived method!");
                     }
                 }
             }
         }
         else
         {
-            Debug.LogError("Error! mainScript not assigned!");
+            Debug.LogError("<color='red'>Error!</color> mainScript not assigned!");
         }
     }
 }
