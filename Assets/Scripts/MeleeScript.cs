@@ -7,6 +7,7 @@ public class MeleeScript : MonoBehaviour
     // The amount of damage to deal (if not specified already)
     public float meleeDamage = 10.0f;
 
+    // Reference to the player
     private PlayerController player;
 
     // Deal damage to the specified game object

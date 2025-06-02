@@ -30,7 +30,7 @@ public class MovementScript : MonoBehaviour
     }
     public MovementStates movementState = MovementStates.walking;
 
-
+    // Components
     private Rigidbody rb;
     private NoiseSpawner noiseSpawner;
 

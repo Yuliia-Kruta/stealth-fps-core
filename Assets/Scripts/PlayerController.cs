@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // The player's camera sensitivity with the mouse
     public float cameraSensitivityX = 2000;
     public float cameraSensitivityY = 2000;
 
@@ -43,9 +44,6 @@ public class PlayerController : MonoBehaviour
         // Lock the cursor to the center of the screen and hide it
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        // Find all enemies in the level
-        //enemies = GameObject.FindObjectsOfType<EnemyAI>();
         
         currentHealth = maxHealth;
     }
@@ -165,8 +163,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Trying to pickup");
             TryPickUpWeapon();
         }
-        // Pick Up requires right mouse button click.
-        // If (Input.GetMouseButtonDown(1))
 
 
         // ===================================

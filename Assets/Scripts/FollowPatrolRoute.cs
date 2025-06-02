@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class FollowPatrolRoute : MonoBehaviour
 {
-    // Whether this object is following its normal patrol route (currently unused)
-    //private bool isPatrolling = true;
     // The specific route this object is following
     public int routeID;
 
-    // All the nodes that exist in this path. The array is populated during Start()
+    // All the nodes that exist in this route. The array is populated during Start()
     private PatrolNode[] routeNodes;
 
-    // The node that the object is meant to be going towards
+    // The node that the nav mesh agent is pathing towards
     public PatrolNode destinationNode;
 
 

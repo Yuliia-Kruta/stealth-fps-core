@@ -17,6 +17,25 @@ public class EnemyAI : MonoBehaviour
     private GameObject playerObject;
     private PlayerController playerController;
 
+    // Describes what the enemy is currently doing
+    private enum EnemyState
+    {
+        Patrolling,
+        Investigating,
+        Chasing
+    }
+
+    private EnemyState currentState = EnemyState.Patrolling;
+
+    // Where the enemy heard the most recent noise
+    private Vector3 noisePosition;
+
+    // The distance required between the enemy and its destination to be considered "arrived"
+    private float arrivedThreshold = 1.5f;
+    
+    // The maximum range of the enemy's "line of sight" feature
+    private float visionRange = 15f;
+
     // Components
     private EnemyAI enemyAI;
     private Pathfinding pathfinding;
@@ -24,26 +43,7 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private MeleeScript meleeScript;
 
-    private enum EnemyState
-    {
-        Patrolling,
-        Investigating,
-        Stunned, // this one is never used?
-        Chasing
-    }
 
-    private EnemyState currentState = EnemyState.Patrolling;
-
-    private Vector3 noisePosition;
-
-    // Distance to consider "arrived"
-    private float arrivedThreshold = 1.5f;
-    
-    // Range of "line-of-sight"
-    private float visionRange = 15f;
-
-
-    // Start is called before the first frame update
     void Start()
     {
         // Components
@@ -57,20 +57,18 @@ public class EnemyAI : MonoBehaviour
         playerObject = GameObject.FindObjectsOfType<PlayerController>()[0].gameObject;
         playerController = playerObject.GetComponent<PlayerController>();
 
-
         // Set the destination to the patrol route
         pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
     }
 
 
-    // Update is called once per frame
     void Update()
     {
         // Check line of sight with the player if we're not stunned
         string[] includedLayers = {"Obstacle"};
         if (stunTimer <= 0f)
         {
-            hasLineOfSight = CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange);
+            hasLineOfSight = CheckLineOfSight(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange);
         }
         else
         {
@@ -88,6 +86,7 @@ public class EnemyAI : MonoBehaviour
         {
             // Decrease the stun timer
             stunTimer -= Time.deltaTime;
+            // Stop the nav mesh agent from moving
             if (!navMeshAgent.isStopped)
                 navMeshAgent.isStopped = true;
         }
@@ -122,6 +121,7 @@ public class EnemyAI : MonoBehaviour
                     }
                 }
             }
+            // If the enemy is not chasing the player
             else
             {
                 // Tell the player we're no longer chasing them with line of sight
@@ -132,9 +132,10 @@ public class EnemyAI : MonoBehaviour
             }
             
             
-            // If the enemy is investigating and has arrived at its destination
+            // If the enemy is investigating or chasing
             if (currentState == EnemyState.Investigating || currentState == EnemyState.Chasing)
             {
+                // Try updating the destination if we've arrived
                 float distanceToDestination = Vector3.Distance(transform.position, navMeshAgent.destination);
                 if (distanceToDestination <= arrivedThreshold)
                 {
@@ -152,14 +153,8 @@ public class EnemyAI : MonoBehaviour
             pathfinding.updateDestination(playerObject.transform.position);
         }
 
-        // If the NavMeshAgent isn't walking, continue patrolling
-        /*else if (navMeshAgent.velocity == new Vector3(0, 0, 0) && navMeshAgent.isStopped == false)
-        {
-            pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
-        }*/
-        
         // Return to patrol if not doing something else
-        else if (currentState != EnemyState.Investigating && currentState != EnemyState.Stunned && currentState != EnemyState.Chasing)
+        else if (currentState != EnemyState.Investigating && currentState != EnemyState.Chasing)
         {
             currentState = EnemyState.Patrolling;
             pathfinding.updateDestination(followPatrolRoute.destinationNode.transform.position);
@@ -212,6 +207,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+
     void OnCollisionEnter(Collision collision)
     {
         // Don't react to any collisions when we're stunned
@@ -234,6 +230,7 @@ public class EnemyAI : MonoBehaviour
             Stun(0.5f);
         }
     }
+
 
     void OnCollisionStay(Collision collision)
     {
@@ -268,51 +265,10 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // Can delete?
-    /*void CheckLineOfSight()
-    {
-        if (playerObject == null)
-            return;
-
-        Vector3 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, playerObject.transform.position);
-        
-        // If player is too far
-        if (distanceToPlayer > visionRange)
-        {
-            Debug.Log("Player is not within line of sight range");
-            canSeePlayer = false;
-            // Forget the player
-            playerObject = null; 
-            return;
-        }
-        
-        // Create a LayerMask to exclude the EnemyVision layer (VisionCone)
-        int enemyVisionLayer = LayerMask.NameToLayer("EnemyVision");
-        int layerMask = ~(1 << enemyVisionLayer);  
-
-        // Cast a ray toward the player
-        if (Physics.Raycast(transform.position + Vector3.up, directionToPlayer, out RaycastHit hit, distanceToPlayer, layerMask))
-        {
-            // Check if the hit object is the player
-            if (hit.collider.gameObject == playerObject)
-            {
-                canSeePlayer = true;
-            }
-            else
-            {
-                // If something blocks the view
-                Debug.Log("No line of sight");
-                canSeePlayer = false; 
-                // Forget the player
-                playerObject = null; 
-            }
-        }
-    }*/
 
     // Checks if there are any objects from includedLayers between fromPosition and toPosition
     // Returns true if there are no objects, returns false if there are objects or if the line's length exceeds maxDistance
-    bool CheckLineOfSight2(Vector3 fromPosition, Vector3 toPosition, string[] includedLayers, float maxDistance = 999999f)
+    bool CheckLineOfSight(Vector3 fromPosition, Vector3 toPosition, string[] includedLayers, float maxDistance = 999999f)
     {
         Vector3 directionToTarget = (toPosition - fromPosition).normalized;
         float distanceToTarget = Vector3.Distance(fromPosition, toPosition);
@@ -376,6 +332,7 @@ public class EnemyAI : MonoBehaviour
             currentState = EnemyState.Investigating;
         }
     }
+    
     
     void UpdateEnemyInList(List<EnemyAI> list, bool condition)
     {

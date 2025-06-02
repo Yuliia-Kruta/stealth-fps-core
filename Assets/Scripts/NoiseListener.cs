@@ -8,7 +8,6 @@ public class NoiseListener : MonoBehaviour
     // Reference to the main script that might have OnNoiseReceived()
     public UnityEngine.Object mainScript;
 
-    
     // Run the OnNoiseReceived method on mainScript, giving it the noisePosition argument
     public void ReceiveNoise(Vector3 noisePosition)
     {

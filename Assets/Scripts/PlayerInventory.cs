@@ -109,7 +109,7 @@ public class PlayerInventory : MonoBehaviour
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.localRotation = Quaternion.identity;
 
-            // 🧷 Disable physics while holding
+            // Disable physics while holding
             Collider col = newWeapon.GetComponent<Collider>();
             if (col != null) col.enabled = false;
             
