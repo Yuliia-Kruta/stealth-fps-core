@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour
     public float pickupRange = 3f;
     public LayerMask weaponLayer;
     public float throwForce = 20f;
+    
+    // Player's health
+    private float maxHealth = 100f;
+    private float currentHealth;
 
     // References to other objects
     private UIController UIController;
@@ -42,6 +46,8 @@ public class PlayerController : MonoBehaviour
 
         // Find all enemies in the level
         //enemies = GameObject.FindObjectsOfType<EnemyAI>();
+        
+        currentHealth = maxHealth;
     }
 
 
@@ -234,6 +240,17 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Finish"))
         {
             UIController.ShowWinPanel();
+        }
+    }
+    
+    public void TakeDamage(float amount)
+    {
+        currentHealth -= amount;
+        Debug.Log("<color='red'>Player took " + amount + " damage. Current health: " + currentHealth + "</color>");
+
+        if (currentHealth <= 0f)
+        {
+            Die();
         }
     }
     

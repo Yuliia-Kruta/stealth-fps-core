@@ -7,6 +7,8 @@ public class MeleeScript : MonoBehaviour
     // The amount of damage to deal (if not specified already)
     public float meleeDamage = 10.0f;
 
+    private PlayerController player;
+
     // Deal damage to the specified game object
     public void MeleeAttack(GameObject target, float damage = -1)
     {
@@ -15,7 +17,12 @@ public class MeleeScript : MonoBehaviour
         {
             damage = meleeDamage;
         }
-
-        Debug.Log("<color='orange'> Enemy dealt " + meleeDamage + " damage to " + target + "</color>");
+        
+        player = target.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.TakeDamage(damage);
+            //Debug.Log("<color='orange'> Enemy dealt " + damage + " damage to " + target.name + "</color>");
+        }
     }
 }
