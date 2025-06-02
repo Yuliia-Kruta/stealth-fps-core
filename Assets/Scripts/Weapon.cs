@@ -93,8 +93,8 @@ public class Weapon : MonoBehaviour
             isGrounded = true;
         }
         
-        // If weapon is grounded
-        if (isGrounded && wasThrown)
+        // If weapon was thrown
+        if (!isGrounded && wasThrown)
         {
             GenerateImpactNoise();
 
