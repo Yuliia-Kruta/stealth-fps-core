@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Finish"))
         {
-            UIController.ShowFinishPanel();
+            UIController.ShowWinPanel();
         }
     }
     

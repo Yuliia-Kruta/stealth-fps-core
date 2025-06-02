@@ -13,6 +13,9 @@ public class UIController : MonoBehaviour
     private Image stickIcon;
     private Image stoneIcon;
     private Image grenadeIcon;
+    
+    [SerializeField] private GameObject visibilityEye;
+    [SerializeField] private GameObject weaponHUD;
 
     // Set visual weapon count
     public TMPro.TMP_Text stickCount;
@@ -91,6 +94,8 @@ public class UIController : MonoBehaviour
     public void ShowPausePanel()
     {
         pausePanel.SetActive(true);
+        visibilityEye.SetActive(false);
+        weaponHUD.SetActive(false);
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -99,6 +104,8 @@ public class UIController : MonoBehaviour
     public void HidePausePanel()
     {
         pausePanel.SetActive(false);
+        visibilityEye.SetActive(true);
+        weaponHUD.SetActive(true);
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -107,14 +114,18 @@ public class UIController : MonoBehaviour
     public void ShowGameOverPanel()
     {
         gameOverPanel.SetActive(true);
+        visibilityEye.SetActive(false);
+        weaponHUD.SetActive(false);
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    public void ShowFinishPanel()
+    public void ShowWinPanel()
     {
         finishPanel.SetActive(true);
+        visibilityEye.SetActive(false);
+        weaponHUD.SetActive(false);
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

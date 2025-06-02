@@ -452,6 +452,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 594546402}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &83299853 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3682947065277063322, guid: 8ad0a88982020e43b80566c09c2765ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756599626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &129650297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,6 +2886,12 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 59f37948d6055464080666ea138192d8, type: 3}
+--- !u!1 &878372591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4912681726684998566, guid: 8ad0a88982020e43b80566c09c2765ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756599626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &904702028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5114,6 +5126,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3473482346571805393, guid: 8ad0a88982020e43b80566c09c2765ee,
         type: 3}
+      propertyPath: weaponHUD
+      value: 
+      objectReference: {fileID: 878372591}
+    - target: {fileID: 3473482346571805393, guid: 8ad0a88982020e43b80566c09c2765ee,
+        type: 3}
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 941842263}
@@ -5127,6 +5144,11 @@ PrefabInstance:
       propertyPath: gameOverPanel
       value: 
       objectReference: {fileID: 252756983}
+    - target: {fileID: 3473482346571805393, guid: 8ad0a88982020e43b80566c09c2765ee,
+        type: 3}
+      propertyPath: visibilityEye
+      value: 
+      objectReference: {fileID: 83299853}
     - target: {fileID: 3682947066227382355, guid: 8ad0a88982020e43b80566c09c2765ee,
         type: 3}
       propertyPath: m_Name
