@@ -146,6 +146,9 @@ public class PlayerInventory : MonoBehaviour
         weaponInventory[currentType].count--;
         TrackWeaponCount();
 
+        currentWeapon.isGrounded = false;
+        currentWeapon.wasThrown = true;
+
         // Detach the weapon from the player
         currentWeapon.transform.SetParent(null);
         
@@ -154,11 +157,12 @@ public class PlayerInventory : MonoBehaviour
         if (col != null) col.enabled = true;
 
         // Check if the weapon is no longer initially grounded
-        if (!currentWeapon.isGrounded)
+        //if (!currentWeapon.isGrounded)
+        /*if (!currentWeapon.wasThrown)
         {
             Debug.Log("<color='yellow'>Weapon is now falling</color>");
             currentWeapon.isGrounded = true;
-        }
+        }*/
 
 
         Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();

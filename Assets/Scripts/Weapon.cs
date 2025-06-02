@@ -18,6 +18,8 @@ public class Weapon : MonoBehaviour
     // Whether the weapon is currently on the ground
     public bool isGrounded;
 
+    public bool wasThrown;
+
     private NoiseSpawner noiseSpawner;
 
     // Current type of the weapon
@@ -48,7 +50,10 @@ public class Weapon : MonoBehaviour
         }
 
         // Set isGrounded to False on start otherwise it triggers a 'false positive'
-        isGrounded = false;
+        //isGrounded = false;
+        
+        isGrounded = true;
+        wasThrown = false;
     }
 
     void WeaponSetup()
@@ -84,10 +89,12 @@ public class Weapon : MonoBehaviour
         {
             // Apply stun based on weapon's stun duration
             enemy.Stun(stunDuration);
+            wasThrown = true;
+            isGrounded = true;
         }
         
         // If weapon is grounded
-        if (isGrounded)
+        if (isGrounded && wasThrown)
         {
             GenerateImpactNoise();
 
@@ -99,7 +106,8 @@ public class Weapon : MonoBehaviour
             }
 
             // Set isGrounded back to false so weapons can be reused
-            isGrounded = false;
+            isGrounded = true;
+            wasThrown = false;
         }
     }
 

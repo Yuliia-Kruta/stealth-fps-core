@@ -356,12 +356,12 @@ PrefabInstance:
     - target: {fileID: 285855241461161293, guid: 55c41d92fd602234990be0929b9f99e1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.53
+      value: 0.38
       objectReference: {fileID: 0}
     - target: {fileID: 285855241461161293, guid: 55c41d92fd602234990be0929b9f99e1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.69
+      value: -3.83
       objectReference: {fileID: 0}
     - target: {fileID: 285855241461161293, guid: 55c41d92fd602234990be0929b9f99e1,
         type: 3}
@@ -1757,6 +1757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrounded: 0
+  wasThrown: 0
   weaponType: 0
 --- !u!114 &1964140023
 MonoBehaviour:
