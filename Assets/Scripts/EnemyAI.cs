@@ -198,7 +198,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         // If our vision overlapped with a player
-        if (player != null)
+        if (player != null && hasLineOfSight)
         {
             currentState = EnemyState.Chasing;
         }
