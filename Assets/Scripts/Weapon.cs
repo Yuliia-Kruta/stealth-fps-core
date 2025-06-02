@@ -91,6 +91,14 @@ public class Weapon : MonoBehaviour
             enemy.Stun(stunDuration);
             wasThrown = true;
             isGrounded = true;
+
+            // Destroy the weapon if it's explosive
+            if (isExplosive)
+            {
+                GenerateImpactNoise();
+                Destroy(gameObject);
+                Debug.Log("<color='orange'>BOOM!</color>");
+            }
         }
         
         // If weapon was thrown
