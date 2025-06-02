@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class UIController : MonoBehaviour
     public TMPro.TMP_Text stoneCount;
     public TMPro.TMP_Text grenadeCount;
 
+    // Menu panels
+    [SerializeField]
+    private GameObject pausePanel;
+    [SerializeField]
+    private GameObject gameOverPanel;
+    [SerializeField]
+    private GameObject finishPanel;
 
     void Start()
     {
@@ -78,5 +86,50 @@ public class UIController : MonoBehaviour
                 Debug.Log("No selected weapon to highlight");
                 break;
         }
+    }
+    
+    public void ShowPausePanel()
+    {
+        pausePanel.SetActive(true);
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void HidePausePanel()
+    {
+        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void ShowGameOverPanel()
+    {
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void ShowFinishPanel()
+    {
+        finishPanel.SetActive(true);
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void NewGame()
+    {
+        // Optional: load a new scene or restart current
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

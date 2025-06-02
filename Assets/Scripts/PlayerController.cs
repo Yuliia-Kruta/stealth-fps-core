@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -183,6 +184,20 @@ public class PlayerController : MonoBehaviour
         }
         // Throwing requires left mouse button click.
         // If (Input.GetMouseButtonDown(0))
+        
+        
+        // ===================================
+        //             Menu
+        // ===================================
+        
+        // Pause menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.timeScale > 0f)
+                UIController.ShowPausePanel();
+            else
+                UIController.HidePausePanel();
+        }
     }
 
     void TryPickUpWeapon()
@@ -212,5 +227,18 @@ public class PlayerController : MonoBehaviour
             vector.x * sin + vector.y * cos
         );
     }
-        
+
+    // Player gets to the finish point
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            UIController.ShowFinishPanel();
+        }
+    }
+    
+    public void Die()
+    {
+        UIController.ShowGameOverPanel();
+    }
 }
