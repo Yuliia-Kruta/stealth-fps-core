@@ -22,6 +22,7 @@ public class EnemyAI : MonoBehaviour
     private Pathfinding pathfinding;
     private FollowPatrolRoute followPatrolRoute;
     private NavMeshAgent navMeshAgent;
+    private MeleeScript meleeScript;
 
     private enum EnemyState
     {
@@ -50,6 +51,7 @@ public class EnemyAI : MonoBehaviour
         pathfinding = GetComponent<Pathfinding>();
         followPatrolRoute = GetComponent<FollowPatrolRoute>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        meleeScript = GetComponent<MeleeScript>();
 
         // Get a reference to the player
         playerObject = GameObject.FindObjectsOfType<PlayerController>()[0].gameObject;
@@ -212,6 +214,50 @@ public class EnemyAI : MonoBehaviour
         if (player != null)
         {
             currentState = EnemyState.Chasing;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Don't react to any collisions when we're stunned
+        if (stunTimer > 0f)
+            return;
+
+        // Get the object that we collided with
+        GameObject collidedObject = collision.gameObject;
+
+        // Try to get components from the collided object to figure out what that object is
+        PlayerController player = collidedObject.GetComponent<PlayerController>();
+
+        // If collision was with a player
+        if (player != null)
+        {
+            meleeScript.MeleeAttack(collision.collider.gameObject);
+            // Bump the enemy back a bit
+            navMeshAgent.velocity = new Vector3(navMeshAgent.velocity.normalized.x * -2, 0, navMeshAgent.velocity.normalized.z * -2);
+            // Stun the enemy for a bit as an attack cooldown
+            Stun(0.5f);
+        }
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        // Don't react to any collisions when we're stunned
+        if (stunTimer > 0f)
+            return;
+            
+        // Get the object that we're colliding with
+        GameObject collidedObject = collision.gameObject;
+
+        // Try to get components from the colliding object to figure out what that object is
+        PlayerController player = collidedObject.GetComponent<PlayerController>();
+
+        // If collision was with a player
+        if (player != null)
+        {
+            // Bump the enemy back a bit
+            navMeshAgent.velocity = new Vector3(navMeshAgent.velocity.normalized.x * -2, 0, navMeshAgent.velocity.normalized.z * -2);
+            Stun(0.2f);
         }
     }
 
