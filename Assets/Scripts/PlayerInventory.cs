@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,29 +12,34 @@ public class WeaponSlot
 public class PlayerInventory : MonoBehaviour
 {
     // Where the held weapon is attached
-    public Transform weaponHoldPoint; 
+    [SerializeField] private Transform weaponHoldPoint;
 
-    // Mapping weapon types to their slots
-    public Dictionary<WeaponType, WeaponSlot> weaponInventory = new Dictionary<WeaponType, WeaponSlot>();
+    //Reference for visually displaying weapon count and selection  
+    [SerializeField] private UIController UIController;
 
+    // Current weapon equipped
     public Weapon currentWeapon;
 
-    // Reference for visually displaying weapon count and selection  
-    private UIController UIController;
+    // Mapping weapon types to their slots
+    private Dictionary<WeaponType, WeaponSlot> weaponInventory = new();
 
-    // Reference for getting bool isGrounded 
-    private Weapon weaponScript;
-
+    private void Awake()
+    {
+        // Prepopulate the weapon inventory dictionary with all WeaponType values
+        foreach (WeaponType type in System.Enum.GetValues(typeof(WeaponType)))
+        {
+            weaponInventory[type] = new WeaponSlot { count = 0 };
+        }
+    }
 
     void Start()
     {
-        weaponInventory[WeaponType.stone] = new WeaponSlot { count = 0 };
-        weaponInventory[WeaponType.stick] = new WeaponSlot { count = 0 };
-        weaponInventory[WeaponType.grenade] = new WeaponSlot { count = 0 };
-
         // Get components 
-        UIController = GameObject.FindObjectsOfType<UIController>()[0];
-        weaponScript = GameObject.FindObjectsOfType<Weapon>()[0];
+        UIController = FindObjectOfType<UIController>();
+        if (UIController == null)
+        {
+            Debug.LogError("UIController not found in scene!");
+        }
     }
 
     public void AddWeapon(WeaponType type, Weapon weapon)
@@ -57,10 +61,8 @@ public class PlayerInventory : MonoBehaviour
         if (currentWeapon == null || !currentWeapon.gameObject.activeInHierarchy)
         {
             // Only equip if current is null or hidden
-            EquipWeapon(type); 
+            EquipWeapon(type);
         }
-
-        //Destroy(weapon.gameObject);
 
         // Hide the picked weapon object
         weapon.gameObject.SetActive(false);
@@ -70,10 +72,13 @@ public class PlayerInventory : MonoBehaviour
 
     public void EquipWeapon(WeaponType type)
     {
-        // Swap selected weapon in the UI
-        UIController.UpdateWeaponSelection(type);
-
-        if (!weaponInventory.ContainsKey(type) || weaponInventory[type].count <= 0)
+        if (UIController != null)
+        {
+            // Swap selected weapon in the UI
+            UIController.UpdateWeaponSelection(type);
+        }
+        
+        if (!weaponInventory.TryGetValue(type, out WeaponSlot slot) || slot.count <= 0)
         {
             Debug.Log($"You do not have any {type}s left!");
             return;
@@ -85,19 +90,6 @@ public class PlayerInventory : MonoBehaviour
             Destroy(currentWeapon.gameObject);
             currentWeapon = null;
         }
-        /*
-        //Clear currentWeapon if it's inactive
-        if (currentWeapon != null && !currentWeapon.gameObject.activeInHierarchy)
-        {
-            currentWeapon = null;
-        }
-
-        //Disable the currently held (visible) weapon
-        if (currentWeapon != null)
-        {
-            currentWeapon.gameObject.SetActive(false);
-            currentWeapon = null;
-        }*/
 
         // Instantiate a new weapon object
         if (weaponInventory[type].weaponPrefab != null)
@@ -109,7 +101,9 @@ public class PlayerInventory : MonoBehaviour
             newWeapon.transform.localRotation = Quaternion.identity;
 
             // 🧷 Disable physics while holding
-            newWeapon.GetComponent<Collider>().enabled = false;
+            Collider col = newWeapon.GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+            
             Rigidbody rb = newWeapon.GetComponent<Rigidbody>();
             if (rb != null) rb.isKinematic = true;
 
@@ -123,17 +117,18 @@ public class PlayerInventory : MonoBehaviour
 
     public void ThrowCurrentWeapon(Vector3 direction, float force)
     {
-        WeaponType currentType = currentWeapon.WeaponType;
-
-        if (!weaponInventory.ContainsKey(currentType) || weaponInventory[currentType].count <= 0)
-        {
-            Debug.LogWarning($"Trying to throw a {currentType} but no weapons left!");
-            return;
-        }
-
-        if (currentWeapon == null || !currentWeapon.gameObject.activeInHierarchy)
+        
+        if (currentWeapon == null)
         {
             Debug.LogWarning("No weapon equipped to throw!");
+            return;
+        }
+        
+        WeaponType currentType = currentWeapon.WeaponType;
+        
+        if (!weaponInventory.TryGetValue(currentType, out WeaponSlot slot) || slot.count <= 0)
+        {
+            Debug.LogWarning($"Trying to throw a {currentType} but no weapons left!");
             return;
         }
 
@@ -143,10 +138,10 @@ public class PlayerInventory : MonoBehaviour
 
         // Detach and throw
         currentWeapon.transform.SetParent(null);
-        currentWeapon.GetComponent<Collider>().enabled = true;
+        Collider col = currentWeapon.GetComponent<Collider>();
+        if (col != null) col.enabled = true;
 
-
-        // Check if the weapon is no longer initally grounded
+        // Check if the weapon is no longer initially grounded
         if (!currentWeapon.isGrounded)
         {
             Debug.Log("<color='yellow'>Weapon is now falling</color>");
@@ -182,9 +177,9 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log($"WeaponType: {type}, WeaponPrefab: {weaponName}, Count: {count}");
         }
     }
-  
 
-    // Seperate from LogWeaponInventory so it can be called at different times
+
+    // Separate from LogWeaponInventory so it can be called at different times
     public void TrackWeaponCount()
     {
         foreach (var entry in weaponInventory)
@@ -207,6 +202,6 @@ public class PlayerInventory : MonoBehaviour
             {
                 UIController.grenadeCount.text = count.ToString();
             }
-        }       
+        }
     }
 }
