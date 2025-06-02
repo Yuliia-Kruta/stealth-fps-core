@@ -120,15 +120,22 @@ public class UIController : MonoBehaviour
         Cursor.visible = true;
     }
 
+    // Reloads the current scene to restart the game
     public void RestartGame()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    
+    // To continue game from Pause menu
+    public void ContinueGame()
+    {
+        HidePausePanel(); 
+    }
 
+    // This can be updated to load other levels / scenes. Currently same as RestartGame()
     public void NewGame()
     {
-        // Optional: load a new scene or restart current
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
