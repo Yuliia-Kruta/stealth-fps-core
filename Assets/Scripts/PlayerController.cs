@@ -133,7 +133,6 @@ public class PlayerController : MonoBehaviour
         //             Visibility
         // ===================================
 
-
         // Update the visibility eye UI element
         if (enemiesChasingWithLineOfSight.Count > 0)
         {
@@ -153,7 +152,6 @@ public class PlayerController : MonoBehaviour
         //             Weapon pickup
         // ===================================
 
-
         // Fix right keys later
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -168,7 +166,6 @@ public class PlayerController : MonoBehaviour
         //             Swap weapon
         // ===================================
 
-
         // Swap between weapons if 1,2,3 on the keyboard is pressed
         if (Input.GetKeyDown(KeyCode.Alpha1)) playerInventory.EquipWeapon(WeaponType.stick);
         if (Input.GetKeyDown(KeyCode.Alpha2)) playerInventory.EquipWeapon(WeaponType.stone); 
@@ -178,7 +175,6 @@ public class PlayerController : MonoBehaviour
         // ===================================
         //             Throw weapon
         // ===================================
-
 
         if (Input.GetKeyDown(KeyCode.Y)) // Right-click to throw
         {

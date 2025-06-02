@@ -71,6 +71,7 @@ public class Weapon : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+
         // Check if we hit an enemy
         EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
         if (enemy != null && !isGrounded)
@@ -78,13 +79,15 @@ public class Weapon : MonoBehaviour
             // Apply stun based on weapon's stun duration
             enemy.Stun(stunDuration);
         }        
+        
 
+        // If the Weapon is grounded, but not from initial scene start
         if (isGrounded == true)
         {
-            // Weapon is grounded, but not from initial scene start
+            
             Debug.Log("<color='yellow'>Weapon has made impact</color>");
             
-
+            // Create noise based on WeaponType
             float noiseRadius = 0f;
             float noiseDuration = 1f;
 

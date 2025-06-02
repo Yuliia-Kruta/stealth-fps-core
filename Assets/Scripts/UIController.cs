@@ -56,7 +56,7 @@ public class UIController : MonoBehaviour
     public void UpdateWeaponSelection(WeaponType type)
     {
 
-        // Set Icons back to the greyed-out image
+        // Set Icons back to thir greyed-out version
         stickIcon.sprite = Resources.Load<Sprite>("Stick");
         stoneIcon.sprite = Resources.Load<Sprite>("Stone");
         grenadeIcon.sprite = Resources.Load<Sprite>("Grenade");
