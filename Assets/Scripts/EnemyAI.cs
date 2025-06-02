@@ -129,11 +129,11 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-            // Tell the player we're no longer chasing them with line of sight
-            if (playerController.enemiesChasingWithLineOfSight.Contains(enemyAI) == true)
-            {
-                playerController.enemiesChasingWithLineOfSight.Remove(enemyAI);
-            }
+                // Tell the player we're no longer chasing them with line of sight
+                if (playerController.enemiesChasingWithLineOfSight.Contains(enemyAI) == true)
+                {
+                    playerController.enemiesChasingWithLineOfSight.Remove(enemyAI);
+                }
             }
             
             
