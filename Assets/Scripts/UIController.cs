@@ -65,13 +65,13 @@ public class UIController : MonoBehaviour
         // Load 'Selected_Weapon' images based on the WeaponType
         switch (type)
         {
-            case WeaponType.stone:
+            case WeaponType.Stone:
                 stoneIcon.sprite = Resources.Load<Sprite>("Selected_Stone");
                 break;
-            case WeaponType.stick:
+            case WeaponType.Stick:
                 stickIcon.sprite = Resources.Load<Sprite>("Selected_Stick");
                 break;
-            case WeaponType.grenade:
+            case WeaponType.Grenade:
                 grenadeIcon.sprite = Resources.Load<Sprite>("Selected_Grenade");
                 break;
             case WeaponType.None:

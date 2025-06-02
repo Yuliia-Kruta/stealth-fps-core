@@ -170,9 +170,9 @@ public class PlayerController : MonoBehaviour
 
 
         // Swap between weapons if 1,2,3 on the keyboard is pressed
-        if (Input.GetKeyDown(KeyCode.Alpha1)) playerInventory.EquipWeapon(WeaponType.stick);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) playerInventory.EquipWeapon(WeaponType.stone); 
-        if (Input.GetKeyDown(KeyCode.Alpha3)) playerInventory.EquipWeapon(WeaponType.grenade);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) playerInventory.EquipWeapon(WeaponType.Stick);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) playerInventory.EquipWeapon(WeaponType.Stone); 
+        if (Input.GetKeyDown(KeyCode.Alpha3)) playerInventory.EquipWeapon(WeaponType.Grenade);
 
 
         // ===================================

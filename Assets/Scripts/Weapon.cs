@@ -1,43 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
+// Enum for different weapon types
 public enum WeaponType
 {
     None = -1,
-    stone = 0,
-    stick = 1,
-    grenade = 2
+    Stone = 0,
+    Stick = 1,
+    Grenade = 2
 }
 
 public class Weapon : MonoBehaviour
 {
-    // Default weapon properties
-    private float stunDuration = 0;
-    private bool isExplosive = false;
+    // Weapon properties
+    private float stunDuration;
+    private bool isExplosive;
 
-    // Check whether the oject is grounded
+    // Whether the weapon is currently on the ground
     public bool isGrounded;
-    
+
     private NoiseSpawner noiseSpawner;
 
-    // Reference to the WeaponType enum
-    [SerializeField]
-    private WeaponType weaponType;
-    
+    // Current type of the weapon
+    [SerializeField] private WeaponType weaponType;
+
+    // Public property for accessing and setting the weapon type
     public WeaponType WeaponType
     {
         get { return weaponType; }
-        set { weaponType = value; }
+        set
+        {
+            weaponType = value;
+            WeaponSetup();
+        }
     }
-
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        // Set weapon behavior based on its type
         WeaponSetup();
 
+        // Getting the NoiseSpawner component
         noiseSpawner = GetComponent<NoiseSpawner>();
         if (noiseSpawner == null)
         {
@@ -45,24 +48,28 @@ public class Weapon : MonoBehaviour
         }
 
         // Set isGrounded to False on start otherwise it triggers a 'false positive'
-        isGrounded = false; 
+        isGrounded = false;
     }
 
     void WeaponSetup()
     {
+        // Reset properties to safe defaults
+        stunDuration = 0f;
+        isExplosive = false;
+        
         // Set the weapon's properties to the right type
         switch (weaponType)
         {
             // Set properties for the stone weapon
-            case WeaponType.stone:
+            case WeaponType.Stone:
                 stunDuration = 5f;
                 break;
-            // Set for the stick weapon
-            case WeaponType.stick:
+            // Set properties for the stick weapon
+            case WeaponType.Stick:
                 stunDuration = 2f;
                 break;
-            // Set for the grenade weapon
-            case WeaponType.grenade:
+            // Set properties for the grenade weapon
+            case WeaponType.Grenade:
                 stunDuration = 10f;
                 isExplosive = true;
                 break;
@@ -71,41 +78,21 @@ public class Weapon : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Check if we hit an enemy
+        // If we hit an enemy while in the air (not grounded)
         EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
         if (enemy != null && !isGrounded)
         {
             // Apply stun based on weapon's stun duration
             enemy.Stun(stunDuration);
-        }        
-
-        if (isGrounded == true)
+        }
+        
+        // If weapon is grounded
+        if (isGrounded)
         {
-            // Weapon is grounded, but not from initial scene start
-            Debug.Log("<color='yellow'>Weapon has made impact</color>");
-            
+            GenerateImpactNoise();
 
-            float noiseRadius = 0f;
-            float noiseDuration = 1f;
-
-            switch (weaponType)
-            {
-                case WeaponType.stick:
-                    noiseRadius = 5f;
-                    break;
-                case WeaponType.stone:
-                    noiseRadius = 10f;
-                    break;
-                case WeaponType.grenade:
-                    noiseRadius = 20f;
-                    break;
-                }
-
-            noiseSpawner.SpawnNoise(noiseRadius, noiseDuration);
-
-
-            // Set any Weapon with isExplosive attached to non-rusable
-            if (isExplosive == true)
+            // Destroy the weapon if it's explosive
+            if (isExplosive)
             {
                 Destroy(gameObject);
                 Debug.Log("<color='orange'>BOOM!</color>");
@@ -114,5 +101,20 @@ public class Weapon : MonoBehaviour
             // Set isGrounded back to false so weapons can be reused
             isGrounded = false;
         }
-    } 
+    }
+
+    // Spawns noise based on weapon type
+    void GenerateImpactNoise()
+    {
+        float noiseRadius = weaponType switch
+        {
+            WeaponType.Stick => 5f,
+            WeaponType.Stone => 10f,
+            WeaponType.Grenade => 20f,
+            _ => 0f
+        };
+
+        noiseSpawner.SpawnNoise(noiseRadius, 1f);
+        Debug.Log("<color='yellow'>Weapon has made impact</color>");
+    }
 }

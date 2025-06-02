@@ -207,13 +207,13 @@ public class PlayerInventory : MonoBehaviour
             // Update count text fields in UIController based on weapon type.
             switch (type)
             {
-                case WeaponType.stick:
+                case WeaponType.Stick:
                     UIController.stickCount.text = count.ToString();
                     break;
-                case WeaponType.stone:
+                case WeaponType.Stone:
                     UIController.stoneCount.text = count.ToString();
                     break;
-                case WeaponType.grenade:
+                case WeaponType.Grenade:
                     UIController.grenadeCount.text = count.ToString();
                     break;
             }
