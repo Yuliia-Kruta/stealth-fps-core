@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
         // ===================================
 
         // Fix right keys later
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1))
         {
             Debug.Log("Trying to pickup");
             TryPickUpWeapon();
@@ -183,13 +183,11 @@ public class PlayerController : MonoBehaviour
         //             Throw weapon
         // ===================================
 
-        if (Input.GetKeyDown(KeyCode.Y)) // Right-click to throw
+        if (Input.GetKeyDown(KeyCode.Y) || Input.GetMouseButtonDown(0)) // Left-click to throw
         {
             Vector3 throwDirection = camera.transform.forward; // throw forward from camera view
             playerInventory.ThrowCurrentWeapon(throwDirection, throwForce);
         }
-        // Throwing requires left mouse button click.
-        // If (Input.GetMouseButtonDown(0))
         
         
         // ===================================
