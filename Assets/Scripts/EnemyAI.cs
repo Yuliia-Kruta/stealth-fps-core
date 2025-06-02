@@ -28,7 +28,7 @@ public class EnemyAI : MonoBehaviour
     {
         Patrolling,
         Investigating,
-        Stunned,
+        Stunned, // this one is never used?
         Chasing
     }
 
@@ -66,9 +66,17 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check line of sight with the player
+        // Check line of sight with the player if we're not stunned
         string[] includedLayers = {"Obstacle"};
-        hasLineOfSight = CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange);
+        if (stunTimer <= 0f)
+        {
+            hasLineOfSight = CheckLineOfSight2(transform.position + new Vector3(0f, 0.5f, 0f), playerObject.transform.position + new Vector3(0f, 0.5f, 0f), includedLayers, visionRange);
+        }
+        else
+        {
+            hasLineOfSight = false;
+            canSeePlayer = false;
+        }
 
 
         // Tell the player if they have line of sight with this enemy
@@ -256,7 +264,7 @@ public class EnemyAI : MonoBehaviour
         if (stunTimer <= 0f)
         {
             stunTimer = duration;
-            Debug.Log($"Enemy stunned for {duration} seconds.");
+            Debug.Log($"<color=orange>Enemy stunned for {duration} seconds.</color>");
         }
     }
 
