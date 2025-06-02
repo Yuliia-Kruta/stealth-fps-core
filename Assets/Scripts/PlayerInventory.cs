@@ -5,7 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class WeaponSlot
 {
+    /// Weapon type reference
     public Weapon weaponPrefab;
+    /// Number of weapons in inventory of specific type
     public int count;
 }
 
@@ -44,6 +46,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddWeapon(WeaponType type, Weapon weapon)
     {
+        // If inventory has an entry for this weapon type
         if (!weaponInventory.ContainsKey(type))
         {
             weaponInventory[type] = new WeaponSlot();
@@ -55,36 +58,42 @@ public class PlayerInventory : MonoBehaviour
             weaponInventory[type].weaponPrefab = weapon;
         }
 
+        // Increment the count of this weapon type
         weaponInventory[type].count++;
+        
+        // Update the UI to reflect new weapon counts
         TrackWeaponCount();
-
+        
+        // Equip this weapon if no weapon is currently equipped or if the current one is inactive.
         if (currentWeapon == null || !currentWeapon.gameObject.activeInHierarchy)
         {
-            // Only equip if current is null or hidden
             EquipWeapon(type);
         }
 
         // Hide the picked weapon object
         weapon.gameObject.SetActive(false);
+        
         Debug.Log("Inventory after pickup: ");
         LogWeaponInventory();
     }
 
     public void EquipWeapon(WeaponType type)
     {
+        // Update the UI to highlight the selected weapon type.
         if (UIController != null)
         {
             // Swap selected weapon in the UI
             UIController.UpdateWeaponSelection(type);
         }
         
+        // Check if the weapon is available in the inventory
         if (!weaponInventory.TryGetValue(type, out WeaponSlot slot) || slot.count <= 0)
         {
             Debug.Log($"You do not have any {type}s left!");
             return;
         }
 
-        // Remove old weapon
+        // Destroy the currently equipped weapon before equipping the new one
         if (currentWeapon != null)
         {
             Destroy(currentWeapon.gameObject);
@@ -126,6 +135,7 @@ public class PlayerInventory : MonoBehaviour
         
         WeaponType currentType = currentWeapon.WeaponType;
         
+        // Verify inventory count before throwing
         if (!weaponInventory.TryGetValue(currentType, out WeaponSlot slot) || slot.count <= 0)
         {
             Debug.LogWarning($"Trying to throw a {currentType} but no weapons left!");
@@ -136,8 +146,10 @@ public class PlayerInventory : MonoBehaviour
         weaponInventory[currentType].count--;
         TrackWeaponCount();
 
-        // Detach and throw
+        // Detach the weapon from the player
         currentWeapon.transform.SetParent(null);
+        
+        // Re-enable physics for throwing
         Collider col = currentWeapon.GetComponent<Collider>();
         if (col != null) col.enabled = true;
 
@@ -153,6 +165,8 @@ public class PlayerInventory : MonoBehaviour
         if (rb != null)
         {
             rb.isKinematic = false;
+            
+            // Add upward curve to the throw trajectory
             Vector3 curvedDirection = (direction + Vector3.up * 0.5f).normalized;
             rb.AddForce(curvedDirection * force, ForceMode.Impulse);
         }
@@ -166,6 +180,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void LogWeaponInventory()
     {
+        // Logs the entire weapon inventory, showing the type, prefab name, and count
         foreach (var entry in weaponInventory)
         {
             WeaponType type = entry.Key;
@@ -189,18 +204,18 @@ public class PlayerInventory : MonoBehaviour
 
             int count = slot.count;
 
-            // Update weapon count visually
-            if (type == WeaponType.stick)
+            // Update count text fields in UIController based on weapon type.
+            switch (type)
             {
-                UIController.stickCount.text = count.ToString();
-            }
-            else if (type == WeaponType.stone)
-            {
-                UIController.stoneCount.text = count.ToString();
-            }
-            else if (type == WeaponType.grenade)
-            {
-                UIController.grenadeCount.text = count.ToString();
+                case WeaponType.stick:
+                    UIController.stickCount.text = count.ToString();
+                    break;
+                case WeaponType.stone:
+                    UIController.stoneCount.text = count.ToString();
+                    break;
+                case WeaponType.grenade:
+                    UIController.grenadeCount.text = count.ToString();
+                    break;
             }
         }
     }
