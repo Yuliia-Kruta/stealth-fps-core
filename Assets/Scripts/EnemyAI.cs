@@ -72,20 +72,7 @@ public class EnemyAI : MonoBehaviour
 
 
         // Tell the player if they have line of sight with this enemy
-        if (hasLineOfSight)
-        {
-            if (playerController.enemiesWithLineOfSight.Contains(enemyAI) == false)
-            {
-                playerController.enemiesWithLineOfSight.Add(enemyAI);
-            }
-        }
-        else 
-        {
-            if (playerController.enemiesWithLineOfSight.Contains(enemyAI) == true)
-            {
-                playerController.enemiesWithLineOfSight.Remove(enemyAI);
-            }
-        }
+        UpdateEnemyInList(playerController.enemiesWithLineOfSight, hasLineOfSight);
 
 
         // If this enemy is stunned
@@ -273,7 +260,8 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    void CheckLineOfSight()
+    // Can delete?
+    /*void CheckLineOfSight()
     {
         if (playerObject == null)
             return;
@@ -312,7 +300,7 @@ public class EnemyAI : MonoBehaviour
                 playerObject = null; 
             }
         }
-    }
+    }*/
 
     // Checks if there are any objects from includedLayers between fromPosition and toPosition
     // Returns true if there are no objects, returns false if there are objects or if the line's length exceeds maxDistance
@@ -378,6 +366,20 @@ public class EnemyAI : MonoBehaviour
         if (currentState != EnemyState.Chasing)
         {
             currentState = EnemyState.Investigating;
+        }
+    }
+    
+    void UpdateEnemyInList(List<EnemyAI> list, bool condition)
+    {
+        if (condition)
+        {
+            if (!list.Contains(enemyAI))
+                list.Add(enemyAI);
+        }
+        else
+        {
+            if (list.Contains(enemyAI))
+                list.Remove(enemyAI);
         }
     }
 }
