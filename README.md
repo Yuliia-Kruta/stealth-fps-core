@@ -96,8 +96,8 @@ Clone the repository:
 - **Sprint**: `Left Shift`
 - **Crouch**: `Left Ctrl`
 - **Look Around**: Move your mouse
-- **Pick Up Weapons**: `Right Mouse Button`
-- **Throw Weapon**: `Left Mouse Button`
+- **Pick Up Weapons**: `E Button`
+- **Throw Weapon**: `R Button`
 - **Swap Weapons**: `Mouse Scroll` or number keys `1`, `2`, `3`
 - **Pause Game**: `Esc`
 
