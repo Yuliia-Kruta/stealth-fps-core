@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
         //             Throw weapon
         // ===================================
 
-        if (Input.GetKeyDown(KeyCode.Y) || Input.GetMouseButtonDown(0)) // Left-click to throw
+        if (Input.GetKeyDown(KeyCode.R) || Input.GetMouseButtonDown(0)) // Left-click to throw
         {
             Vector3 throwDirection = camera.transform.forward; // throw forward from camera view
             playerInventory.ThrowCurrentWeapon(throwDirection, throwForce);
