@@ -77,3 +77,4 @@ crashlytics-build.properties
 # Other
 .collabignore
 .DS_Store
+.idea/
